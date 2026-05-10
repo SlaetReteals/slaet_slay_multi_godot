@@ -1,0 +1,31 @@
+[gd_resource type="Theme" format=3 uid="uid://r0vxylhnta0e"]
+
+[ext_resource type="FontFile" uid="uid://d3mtkkq72hmss" path="res://assets/theme/fonts/anonpro/AnonymousPro-Bold.ttf" id="1_24iqn"]
+[ext_resource type="FontFile" uid="uid://bmdvmcifegeut" path="res://assets/theme/fonts/anonpro/AnonymousPro-Regular.ttf" id="1_tqumk"]
+
+[resource]
+default_font = ExtResource("1_tqumk")
+Button/colors/font_color = Color(0.82606, 0.82606006, 0.82606, 1)
+Button/colors/font_disabled_color = Color(0, 0, 0, 1)
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_color = Color(0.26666668, 0, 0.03137255, 1)
+Button/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(0, 0, 0, 1)
+Button/colors/icon_disabled_color = Color(0, 0, 0, 1)
+Button/colors/icon_focus_color = Color(0, 0, 0, 1)
+Button/colors/icon_hover_color = Color(0, 0, 0, 1)
+Button/colors/icon_hover_pressed_color = Color(0, 0, 0, 1)
+Button/colors/icon_normal_color = Color(0, 0, 0, 1)
+Button/colors/icon_pressed_color = Color(0, 0, 0, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 0
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 64
+Button/fonts/font = ExtResource("1_24iqn")
+Button/styles/disabled = null
+Button/styles/focus = null
+Button/styles/hover = null
+Button/styles/normal = null
+Button/styles/pressed = null

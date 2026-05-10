@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://d4meqgvffubom"]
+
+[ext_resource type="Script" uid="uid://dtn6dbfe84jmu" path="res://levels/00_level_lobby/00_level_lobby_queue.gd" id="1_v46p4"]
+[ext_resource type="PackedScene" uid="uid://8nsatcn6jr32" path="res://entities/player/slaet_player/slaet_player.tscn" id="2_v46p4"]
+[ext_resource type="PackedScene" uid="uid://dif2ggd7ov0ig" path="res://systems/player_camera/local_camera_system.tscn" id="4_bvdx8"]
+[ext_resource type="Texture2D" uid="uid://dnsvgqerccs7w" path="res://assets/textures/LevelMaps/ForestOutpost.png" id="4_v46p4"]
+
+[node name="00LevelLobbyQueue" type="Node2D" unique_id=462889802]
+script = ExtResource("1_v46p4")
+player_scene = ExtResource("2_v46p4")
+
+[node name="SpawnLocations" type="Node2D" parent="." unique_id=221263325]
+
+[node name="ClientSpawn" type="Marker2D" parent="SpawnLocations" unique_id=498859325]
+position = Vector2(500, 0)
+
+[node name="HostSpawn" type="Marker2D" parent="SpawnLocations" unique_id=1198802280]
+position = Vector2(-500, 0)
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=761377485]
+_spawnable_scenes = PackedStringArray("uid://8nsatcn6jr32")
+spawn_path = NodePath("..")
+
+[node name="LocalCameraSystem" parent="." unique_id=1673122289 instance=ExtResource("4_bvdx8")]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=677159773]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1288851931]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1488125169]
+scale = Vector2(2, 2)
+texture = ExtResource("4_v46p4")

@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://rkg8r9uwv5gnm"]
+
+[node name="BaseEnemy" type="CharacterBody2D" unique_id=2502802679]
+metadata/TemplateVersion = "1.4.0"

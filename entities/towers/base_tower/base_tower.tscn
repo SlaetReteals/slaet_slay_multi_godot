@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://ap3id5p3cmyp4"]
+
+[node name="BaseTower" type="StaticBody2D" unique_id=2178486517]
+metadata/TemplateVersion = "1.4.0"

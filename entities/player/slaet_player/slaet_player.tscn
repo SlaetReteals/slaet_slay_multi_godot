@@ -1,0 +1,103 @@
+[gd_scene format=3 uid="uid://8nsatcn6jr32"]
+
+[ext_resource type="Script" uid="uid://bpfluss1n6gp5" path="res://entities/player/slaet_player/slaet_player.gd" id="1_uabqr"]
+[ext_resource type="Script" uid="uid://d350u8evihs1u" path="res://addons/netfox/rollback/rollback-synchronizer.gd" id="1_udjpn"]
+[ext_resource type="Texture2D" uid="uid://blbj07sxh1tht" path="res://assets/textures/player/MushWalk.png" id="2_fgq48"]
+[ext_resource type="Texture2D" uid="uid://cf2om8ajheyvk" path="res://assets/textures/player/MushWalkUp.png" id="3_js1sq"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="3_n05ei"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="4_uabqr"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="5_ogvtw"]
+[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="7_ogvtw"]
+[ext_resource type="Texture2D" uid="uid://bycud45r0rop4" path="res://assets/textures/player/MushIdle.png" id="7_pwqxn"]
+[ext_resource type="Script" uid="uid://dour8fehaaugp" path="res://addons/netfox/tick-interpolator.gd" id="8_pwqxn"]
+[ext_resource type="Script" uid="uid://cn5qfcvqbb22d" path="res://entities/player/slaet_player/virtual_joystick_component.gd" id="11_gwlfu"]
+[ext_resource type="Script" uid="uid://cpf67fy83v87d" path="res://entities/player/slaet_player/knob.gd" id="12_aky2q"]
+[ext_resource type="Texture2D" uid="uid://s6ndwlote0of" path="res://assets/textures/ui/Move Joystick Handle.png" id="12_e56cv"]
+[ext_resource type="Texture2D" uid="uid://dmmsyythqo2i" path="res://assets/textures/ui/Move Joystick Background.png" id="14_7jxgo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tlq1q"]
+radius = 5.7999997
+
+[node name="SlaetPlayer" type="CharacterBody2D" unique_id=1673484767 groups=["players"]]
+physics_interpolation_mode = 2
+script = ExtResource("1_uabqr")
+tex_walk_side = ExtResource("2_fgq48")
+tex_walk_up = ExtResource("3_js1sq")
+tex_walk_down = ExtResource("7_pwqxn")
+
+[node name="RollbackSynchronizer" type="Node" parent="." unique_id=150066071 node_paths=PackedStringArray("root")]
+script = ExtResource("1_udjpn")
+root = NodePath("..")
+enable_prediction = true
+state_properties = Array[String]([":global_position", ":velocity"])
+input_properties = Array[String]([":_input_vector"])
+metadata/_custom_type_script = "uid://d350u8evihs1u"
+
+[node name="StateChart" type="Node" parent="." unique_id=24969635]
+script = ExtResource("3_n05ei")
+metadata/_custom_type_script = "uid://couw105c3bde4"
+
+[node name="Root" type="Node" parent="StateChart" unique_id=86044127]
+script = ExtResource("4_uabqr")
+initial_state = NodePath("Idle")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Idle" type="Node" parent="StateChart/Root" unique_id=620168860]
+script = ExtResource("5_ogvtw")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="Transition" type="Node" parent="StateChart/Root/Idle" unique_id=1073206980]
+script = ExtResource("7_ogvtw")
+to = NodePath("../../Move")
+event = &"move"
+delay_in_seconds = "0.0"
+metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
+
+[node name="Move" type="Node" parent="StateChart/Root" unique_id=1022980702]
+script = ExtResource("5_ogvtw")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="Transition" type="Node" parent="StateChart/Root/Move" unique_id=1754459596]
+script = ExtResource("7_ogvtw")
+to = NodePath("../../Idle")
+event = &"idle"
+delay_in_seconds = "0.0"
+metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
+
+[node name="Visuals" type="Node2D" parent="." unique_id=1491096302]
+physics_interpolation_mode = 2
+
+[node name="PlayerSprite" type="Sprite2D" parent="Visuals" unique_id=344040270]
+position = Vector2(-0.12499971, 0.12499988)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("7_pwqxn")
+
+[node name="TickInterpolator" type="Node" parent="." unique_id=113452814 node_paths=PackedStringArray("root")]
+script = ExtResource("8_pwqxn")
+root = NodePath("../Visuals")
+metadata/_custom_type_script = "uid://dour8fehaaugp"
+
+[node name="PlayerHitBox" type="CollisionShape2D" parent="." unique_id=627916716]
+scale = Vector2(5, 5)
+shape = SubResource("CircleShape2D_tlq1q")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=2114761009]
+
+[node name="VirtualJoystickComponent" type="Control" parent="UI" unique_id=1186674409 node_paths=PackedStringArray("knob", "joystick_background")]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+script = ExtResource("11_gwlfu")
+knob = NodePath("Knob")
+joystick_background = NodePath("JoystickBackground")
+
+[node name="JoystickBackground" type="Sprite2D" parent="UI/VirtualJoystickComponent" unique_id=1039040413]
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("14_7jxgo")
+
+[node name="Knob" type="Sprite2D" parent="UI/VirtualJoystickComponent" unique_id=2047890612 node_paths=PackedStringArray("target_sprite")]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("12_e56cv")
+script = ExtResource("12_aky2q")
+target_sprite = NodePath(".")

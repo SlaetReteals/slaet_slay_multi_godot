@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://8nsatcn6jr32"]
+
+[ext_resource type="Texture2D" uid="uid://3lstlqowdexy" path="res://assets/textures/player/player.svg" id="1_m2xd4"]
+[ext_resource type="Script" uid="uid://bpfluss1n6gp5" path="res://entities/player/slaet_player/slaet_player.gd" id="1_uabqr"]
+[ext_resource type="Script" uid="uid://d350u8evihs1u" path="res://addons/netfox/rollback/rollback-synchronizer.gd" id="1_udjpn"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="3_n05ei"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="4_uabqr"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="5_ogvtw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tlq1q"]
+radius = 5.2153616
+
+[node name="SlaetPlayer" type="CharacterBody2D" unique_id=1673484767]
+script = ExtResource("1_uabqr")
+
+[node name="PlayerSprite" type="Sprite2D" parent="." unique_id=344040270]
+texture = ExtResource("1_m2xd4")
+
+[node name="PlayerHitBox" type="CollisionShape2D" parent="." unique_id=627916716]
+scale = Vector2(5, 5)
+shape = SubResource("CircleShape2D_tlq1q")
+
+[node name="RollbackSynchronizer" type="Node" parent="." unique_id=150066071 node_paths=PackedStringArray("root")]
+script = ExtResource("1_udjpn")
+root = NodePath("..")
+enable_prediction = true
+state_properties = Array[String]([":position", ":velocity"])
+input_properties = Array[String]([":_input_vector"])
+metadata/_custom_type_script = "uid://d350u8evihs1u"
+
+[node name="StateChart" type="Node" parent="." unique_id=24969635]
+script = ExtResource("3_n05ei")
+metadata/_custom_type_script = "uid://couw105c3bde4"
+
+[node name="Root" type="Node" parent="StateChart" unique_id=86044127]
+script = ExtResource("4_uabqr")
+initial_state = NodePath("Idle")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Idle" type="Node" parent="StateChart/Root" unique_id=620168860]
+script = ExtResource("5_ogvtw")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="Move" type="Node" parent="StateChart/Root" unique_id=1022980702]
+script = ExtResource("5_ogvtw")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"

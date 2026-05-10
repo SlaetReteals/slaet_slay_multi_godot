@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://8oxv8wwte2ir"]
+
+[ext_resource type="Script" uid="uid://3hybkrb0sq6n" path="res://levels/00_level_lobby/00_level_template.gd" id="1_daua1"]
+[ext_resource type="PackedScene" uid="uid://8nsatcn6jr32" path="res://entities/player/slaet_player/slaet_player.tscn" id="2_p0i6d"]
+[ext_resource type="PackedScene" uid="uid://dhudnqypc48r2" path="res://ui/hud/off_screen_indicator.tscn" id="3_p0i6d"]
+[ext_resource type="PackedScene" uid="uid://dif2ggd7ov0ig" path="res://systems/player_camera/local_camera_system.tscn" id="3_x2fjv"]
+[ext_resource type="Texture2D" uid="uid://dnsvgqerccs7w" path="res://assets/textures/LevelMaps/ForestOutpost.png" id="4_o1uyc"]
+[ext_resource type="Script" uid="uid://bii0j3pljkqub" path="res://levels/00_level_lobby/menu.gd" id="4_x2fjv"]
+
+[node name="00LevelTemplate" type="Node2D" unique_id=462889802]
+script = ExtResource("1_daua1")
+player_scene = ExtResource("2_p0i6d")
+
+[node name="LocalClientHUD" type="CanvasLayer" parent="." unique_id=2139773765]
+
+[node name="OffScreenIndicator" parent="LocalClientHUD" unique_id=1955977937 instance=ExtResource("3_p0i6d")]
+
+[node name="Menu" type="CanvasLayer" parent="LocalClientHUD" unique_id=19782223 node_paths=PackedStringArray("slide_panel", "pull_button")]
+script = ExtResource("4_x2fjv")
+slide_panel = NodePath("Panel")
+pull_button = NodePath("Button")
+
+[node name="Panel" type="Panel" parent="LocalClientHUD/Menu" unique_id=1042427411]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="LocalClientHUD/Menu" unique_id=688496959]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="SpawnLocations" type="Node2D" parent="." unique_id=221263325]
+
+[node name="ClientSpawn" type="Marker2D" parent="SpawnLocations" unique_id=498859325]
+position = Vector2(500, 0)
+
+[node name="HostSpawn" type="Marker2D" parent="SpawnLocations" unique_id=1198802280]
+position = Vector2(-500, 0)
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=761377485]
+_spawnable_scenes = PackedStringArray("uid://8nsatcn6jr32")
+spawn_path = NodePath("..")
+
+[node name="LocalCameraSystem" parent="." unique_id=1673122289 instance=ExtResource("3_x2fjv")]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=677159773]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1288851931]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1488125169]
+scale = Vector2(2, 2)
+texture = ExtResource("4_o1uyc")

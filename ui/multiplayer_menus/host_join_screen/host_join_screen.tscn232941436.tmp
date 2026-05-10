@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://b4byqrc56cx67"]
+
+[ext_resource type="Script" uid="uid://cunyfkbhlq7pl" path="res://ui/multiplayer_menus/host_join_screen/host_join_screen.gd" id="1_bxo50"]
+
+[node name="HostJoinScreen" type="Control" unique_id=-433460157]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_bxo50")
+metadata/TemplateVersion = "1.4.0"
+
+[node name="HostButton" type="Button" parent="." unique_id=1641315325]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Host Button"
+
+[node name="ServerListButton" type="Button" parent="." unique_id=1514872608]
+layout_mode = 0
+offset_left = 111.0
+offset_top = -1.0
+offset_right = 206.0
+offset_bottom = 30.0
+text = "Server List"
+
+[node name="ServerList" type="VBoxContainer" parent="." unique_id=2073989571]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

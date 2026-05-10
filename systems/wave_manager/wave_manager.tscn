@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://c3k322teytd8e"]
+
+[ext_resource type="Script" uid="uid://cc22q0t64jjoc" path="res://systems/wave_manager/wave_manager.gd" id="1_eb7yb"]
+
+[node name="WaveManager" type="Node" unique_id=1216026279]
+script = ExtResource("1_eb7yb")
+
+[node name="EnemySpawner" type="MultiplayerSpawner" parent="." unique_id=1473953984]
+spawn_path = NodePath("..")

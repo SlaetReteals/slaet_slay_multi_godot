@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://b4byqrc56cx67"]
+
+[ext_resource type="Script" uid="uid://cunyfkbhlq7pl" path="res://ui/multiplayer_menus/host_join_screen/host_join_screen.gd" id="1_bxo50"]
+
+[node name="HostJoinScreen" type="Control" unique_id=-433460157]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bxo50")
+metadata/TemplateVersion = "1.4.0"
+
+[node name="BoxContainer" type="BoxContainer" parent="." unique_id=1644371406]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+vertical = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BoxContainer" unique_id=1800387631]
+clip_contents = true
+layout_mode = 2
+alignment = 1
+
+[node name="HostButton" type="Button" parent="BoxContainer/HBoxContainer" unique_id=1641315325]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Host Button"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BoxContainer/HBoxContainer" unique_id=955777719]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="ServerScanButton" type="Button" parent="BoxContainer/HBoxContainer/VBoxContainer" unique_id=1514872608]
+layout_mode = 2
+text = "Server Scan"
+
+[node name="Server" type="Button" parent="BoxContainer/HBoxContainer/VBoxContainer" unique_id=75770903]
+layout_mode = 2
+text = "0.0.0.0"
+
+[node name="ScanTimeout" type="Timer" parent="." unique_id=792569216]
+wait_time = 10.0
+one_shot = true
+
+[connection signal="timeout" from="ScanTimeout" to="." method="_on_scan_timeout_timeout"]

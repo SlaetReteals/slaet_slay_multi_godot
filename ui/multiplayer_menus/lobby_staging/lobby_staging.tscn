@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://bla5cs4yy3b4i"]
+
+[node name="LobbyStaging" type="Control" unique_id=3438497973]
+metadata/TemplateVersion = "1.4.0"

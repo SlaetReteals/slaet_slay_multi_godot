@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://r5af0ve7kid7"]
+
+[ext_resource type="Script" uid="uid://btae5d3enx63l" path="res://core/screen_transition.gd" id="1_ob3hp"]
+
+[node name="ScreenTransition" type="CanvasLayer" unique_id=1462945792]
+process_mode = 3
+layer = 2
+script = ExtResource("1_ob3hp")

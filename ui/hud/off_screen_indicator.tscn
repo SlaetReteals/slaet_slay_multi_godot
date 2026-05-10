@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dhudnqypc48r2"]
+
+[ext_resource type="Script" uid="uid://bbcfuvotrdd1g" path="res://ui/hud/off_screen_indicator.gd" id="1_liwq2"]
+[ext_resource type="Texture2D" uid="uid://da75qjrrxox2k" path="res://assets/textures/arrow.png" id="2_kybve"]
+
+[node name="OffScreenIndicator" type="CanvasLayer" unique_id=1955977937]
+script = ExtResource("1_liwq2")
+
+[node name="Arrow" type="TextureRect" parent="." unique_id=2104748058]
+self_modulate = Color(1, 1, 1, 0.64705884)
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_kybve")
