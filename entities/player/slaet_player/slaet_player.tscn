@@ -21,6 +21,7 @@ radius = 5.7999997
 [node name="SlaetPlayer" type="CharacterBody2D" unique_id=1673484767 groups=["players"]]
 physics_interpolation_mode = 2
 script = ExtResource("1_uabqr")
+speed = 2000.0
 tex_walk_side = ExtResource("2_fgq48")
 tex_walk_up = ExtResource("3_js1sq")
 tex_walk_down = ExtResource("7_pwqxn")
@@ -69,7 +70,7 @@ physics_interpolation_mode = 2
 
 [node name="PlayerSprite" type="Sprite2D" parent="Visuals" unique_id=344040270]
 position = Vector2(-0.12499971, 0.12499988)
-scale = Vector2(0.25, 0.25)
+scale = Vector2(0.35, 0.35)
 texture = ExtResource("7_pwqxn")
 
 [node name="TickInterpolator" type="Node" parent="." unique_id=113452814 node_paths=PackedStringArray("root")]

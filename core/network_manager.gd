@@ -60,11 +60,11 @@ func stop_scanning() -> void:
 	if _udp_client != null:
 		_udp_client.close()
 		_udp_client = null
-		LogManager.info("NetworkManager","Scanning Stopped")
 		
 	if _udp_server == null or not _udp_server.is_listening():
 		set_process(false)
-		LogManager.info("NetworkManager","Scanning Stopped")
+	
+	LogManager.info("NetworkManager","Scanning Stopped")
 
 
 func _start_udp_server() -> void:
