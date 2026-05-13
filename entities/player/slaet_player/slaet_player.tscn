@@ -21,7 +21,6 @@ radius = 5.7999997
 [node name="SlaetPlayer" type="CharacterBody2D" unique_id=1673484767 groups=["players"]]
 physics_interpolation_mode = 2
 script = ExtResource("1_uabqr")
-speed = 2000.0
 tex_walk_side = ExtResource("2_fgq48")
 tex_walk_up = ExtResource("3_js1sq")
 tex_walk_down = ExtResource("7_pwqxn")

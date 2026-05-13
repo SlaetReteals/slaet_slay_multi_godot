@@ -2,9 +2,9 @@ class_name Player
 extends CharacterBody2D
 
 # --- Exported State Variables ---
-@export var speed: float = 300.0
+@export var speed: float = 600.0
 @export var acceleration: float = 4500.0 
-@export var friction: float = 3000.0
+@export var friction: float = 4500.0
 @export var tex_walk_side: Texture2D
 @export var tex_walk_up: Texture2D   
 @export var tex_walk_down: Texture2D 
