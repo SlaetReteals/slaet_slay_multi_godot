@@ -16,39 +16,23 @@
 [ext_resource type="Script" uid="uid://cpf67fy83v87d" path="res://entities/player/slaet_player/knob.gd" id="12_aky2q"]
 [ext_resource type="Texture2D" uid="uid://s6ndwlote0of" path="res://assets/textures/ui/Move Joystick Handle.png" id="12_e56cv"]
 [ext_resource type="Texture2D" uid="uid://dmmsyythqo2i" path="res://assets/textures/ui/Move Joystick Background.png" id="14_7jxgo"]
+[ext_resource type="Script" uid="uid://d01ywede1q00y" path="res://entities/player/slaet_player/weapon_component.gd" id="15_sta88"]
 [ext_resource type="Script" uid="uid://cuqs8vx4dbfby" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="17_wd0ox"]
-[ext_resource type="Script" uid="uid://cb4njr6l5m56v" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="17_xvt38"]
 [ext_resource type="Script" uid="uid://bl57xct8j47m5" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="18_s2hj1"]
-[ext_resource type="Script" uid="uid://bhjpxssuqe6ak" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="19_cgrx4"]
-[ext_resource type="Script" uid="uid://c8a1dhkpy7mp3" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="20_suq1e"]
-[ext_resource type="Script" uid="uid://dwk3r1dm7jxko" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="22_cgrx4"]
-[ext_resource type="Script" uid="uid://5f7wk3urrogu" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="23_suq1e"]
+[ext_resource type="Script" uid="uid://dwk3r1dm7jxko" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="19_nkhk1"]
+[ext_resource type="Script" uid="uid://5f7wk3urrogu" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="20_q0i74"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tlq1q"]
 radius = 5.7999997
 
-[sub_resource type="Curve2D" id="Curve2D_u3j77"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 701, 125, 0, 0, 0, 0, 753, 91, 0, 0, 0, 0, 799, 123, 0, 0, 0, 0, 787, 73, 0, 0, 0, 0, 832, 48, 0, 0, 0, 0, 777, 39, 0, 0, 0, 0, 758, -13, 0, 0, 0, 0, 731, 36, 0, 0, 0, 0, 686, 41, 0, 0, 0, 0, 723, 71)
-}
-point_count = 10
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_kt31x"]
-resource_name = "PatternOne"
-source_geometry_group_name = &"navigation_polygon_source_group"
-script = ExtResource("20_suq1e")
-bullet = "1"
-iterations = -1
-cooldown_spawn = 5.0
-
-[sub_resource type="Curve2D" id="Curve2D_kjhx3"]
+[sub_resource type="Curve2D" id="Curve2D_nkhk1"]
 
 [sub_resource type="Curve" id="Curve_vbs6u"]
 
 [sub_resource type="Curve" id="Curve_2xsyn"]
 
-[sub_resource type="PackedDataContainer" id="PackedDataContainer_yktta"]
-script = ExtResource("23_suq1e")
+[sub_resource type="PackedDataContainer" id="PackedDataContainer_q0i74"]
+script = ExtResource("20_q0i74")
 damage = 1.0
 speed = 100.0
 scale = 1.0
@@ -175,7 +159,7 @@ metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
 
 [node name="Combat" type="Node" parent="StateChart/Root" unique_id=999404573]
 script = ExtResource("4_uabqr")
-initial_state = NodePath("Ready")
+initial_state = NodePath("FireState")
 metadata/_custom_type_script = "uid://jk2jm1g6q853"
 
 [node name="Ready" type="Node" parent="StateChart/Root/Combat" unique_id=782584618]
@@ -238,40 +222,32 @@ texture = ExtResource("12_e56cv")
 script = ExtResource("12_aky2q")
 target_sprite = NodePath(".")
 
-[node name="WeaponComponent" type="Node2D" parent="." unique_id=929327357]
-script = ExtResource("17_xvt38")
+[node name="WeaponComponent" type="Node2D" parent="." unique_id=1171623194 node_paths=PackedStringArray("state_chart", "spawn_point")]
+script = ExtResource("15_sta88")
+state_chart = NodePath("../StateChart")
+spawn_point = NodePath("BulletSpawnPoint/BulletSpawn")
+fire_rate = null
 
-[node name="Patterns" type="Node2D" parent="WeaponComponent" unique_id=15148090]
+[node name="BulletSpawnPoint" type="Node2D" parent="WeaponComponent" unique_id=451202433]
 
-[node name="SpawnPattern" type="Path2D" parent="WeaponComponent/Patterns" unique_id=25759895]
-curve = SubResource("Curve2D_u3j77")
-script = ExtResource("19_cgrx4")
-id = "one"
-pattern = SubResource("NavigationPolygon_kt31x")
-
-[node name="BulletProps" type="Node2D" parent="WeaponComponent" unique_id=235867573]
-
-[node name="BulletPattern" type="Path2D" parent="WeaponComponent/BulletProps" unique_id=2026776853]
-curve = SubResource("Curve2D_kjhx3")
-script = ExtResource("18_s2hj1")
-id = "1"
-props = SubResource("PackedDataContainer_yktta")
-
-[node name="SpawnPoints" type="Node2D" parent="WeaponComponent" unique_id=2011089954]
-
-[node name="SpawnPoint" type="Node2D" parent="WeaponComponent/SpawnPoints" unique_id=1496671138]
+[node name="BulletSpawn" type="Node2D" parent="WeaponComponent/BulletSpawnPoint" unique_id=2078736862]
 script = ExtResource("17_wd0ox")
 active = true
-auto_pattern_id = "one"
+auto_pattern_id = "test"
 shared_area_name = "0"
-rotating_speed = 1.0
+rotating_speed = 0.0
 pool_amount = 50
 auto_start_on_cam = true
 auto_start_after_time = 0.0
 auto_start_at_distance = 5.0
 auto_distance_from = NodePath("")
 trigger_container = NodePath("")
+metadata/_custom_type_script = "uid://cuqs8vx4dbfby"
 
-[node name="FPS" type="Label" parent="WeaponComponent" unique_id=1298573081]
-offset_right = 40.0
-offset_bottom = 14.0
+[node name="BulletProps" type="Node2D" parent="WeaponComponent" unique_id=899740760]
+
+[node name="BulletPattern" type="Path2D" parent="WeaponComponent/BulletProps" unique_id=607885684]
+curve = SubResource("Curve2D_nkhk1")
+script = ExtResource("18_s2hj1")
+id = "1"
+props = SubResource("PackedDataContainer_q0i74")
