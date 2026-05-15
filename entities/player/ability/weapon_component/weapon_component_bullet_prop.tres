@@ -5,10 +5,16 @@
 
 [sub_resource type="Curve" id="Curve_61ami"]
 
+[sub_resource type="Resource" id="Resource_1ydsx"]
+script = ExtResource("1_1ydsx")
+texture = "weapon_component"
+metadata/_custom_type_script = "uid://dwk3r1dm7jxko"
+
 [sub_resource type="Curve" id="Curve_8mxvi"]
 
 [resource]
 script = ExtResource("2_fxwev")
+anim_idle = SubResource("Resource_1ydsx")
 damage = 1.0
 speed = 100.0
 scale = 1.0
@@ -23,7 +29,7 @@ spec_trail_modulate = Color(1, 1, 1, 1)
 spec_rotating_speed = 0.0
 death_after_time = 30.0
 death_outside_box = Rect2(0, 0, 0, 0)
-death_from_collision = true
+death_from_collision = false
 a_direction_equation = ""
 a_curve_movement = 0
 a_speed_multiplier = SubResource("Curve_61ami")

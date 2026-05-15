@@ -6,6 +6,3 @@ class_name PatternOne
 
 func _init():
 	resource_name = "PatternOne"
-
-
-

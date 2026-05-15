@@ -41,7 +41,7 @@ position = Vector2(500, 0)
 position = Vector2(-500, 0)
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=761377485]
-_spawnable_scenes = PackedStringArray("uid://8nsatcn6jr32")
+_spawnable_scenes = PackedStringArray("uid://8nsatcn6jr32", "")
 spawn_path = NodePath("..")
 
 [node name="LocalCameraSystem" parent="." unique_id=1673122289 instance=ExtResource("3_x2fjv")]

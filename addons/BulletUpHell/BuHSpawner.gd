@@ -8,7 +8,6 @@ const STANDARD_BULLET_RADIUS = 5
 
 var CUSTOM:customFunctions = customFunctions.new()
 
-
 @export var GROUP_BOUNCE:String = "Slime"
 
 @export_group("Resource Lists")
@@ -28,7 +27,6 @@ var arrayAnim:Dictionary = {}
 @onready var textures:SpriteFrames = $ShapeManager.sprite_frames
 @onready var arrayShapes:Dictionary = {} # format: id={shape, offset, rotation}
 @onready var viewrect = get_viewport().get_visible_rect()
-
 
 var poolBullets:Dictionary = {}
 var shape_indexes:Dictionary = {}
@@ -100,7 +98,7 @@ func _ready():
 		default_anims[a].ID = "@"+["anim_idle","anim_spawn","anim_shoot","anim_waiting","anim_delete"][a]
 		set_anim_states(default_anims[a])
 
-	#update_viewport()
+				   
 
 func reset(minimal:bool=false):
 	# change that in order signal that a reset has been made and stop the currently running func
@@ -146,18 +144,18 @@ func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 
 	_delta = delta
-	#if not cull_fixed_screen:
-		#viewrect = Rect2(-get_canvas_transform().get_origin()/get_canvas_transform().get_scale(), \
-						#get_viewport_rect().size/get_canvas_transform().get_scale())
+						   
+																							  
+																   
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 
 	if not poolBullets.is_empty():
-#		if move_thread.is_started():
-#			move_thread.wait_to_finish()
-#		move_thread.start(bullet_movement.bind(delta))
-#		#draw_thread.start(queue_redraw)
+							   
+								
+												 
+								   
 		bullet_movement(delta)
 		queue_redraw()
 
@@ -267,7 +265,7 @@ func create_pool(bullet:String, shared_area:String, amount:int, object:bool=fals
 		$SharedAreas.get_node(shared_area).set_meta("ShapeCount", $SharedAreas.get_node(shared_area).get_meta("ShapeCount",0)+amount) # Warning, bad sync possible ?
 		for i in amount:
 			new_rid = create_shape(shared_rid, arrayAnim[props["anim_spawn"]][ANIM.COLLISION], true, count+i)
-#			shape_indexes[new_rid] = count+i
+									
 			_update_shape_indexes(new_rid, count+i, shared_area)
 			inactive_pool[bullet].append([new_rid, shared_area])
 	inactive_pool["__SIZE__"+bullet] += amount
@@ -379,10 +377,10 @@ func set_spawn_data(queued_instance:Dictionary, bullet_props:Dictionary, pattern
 ### TRIGGER SPAWN ###
 
 func spawn(spawner, id:String, shared_area:String="0"):
-	#spawn_thread.start(_thread_spawn.bind(spawner, id, shared_area))
-	#_thread_spawn(spawner, id, shared_area)
+																  
+										 
 
-#func _thread_spawn(spawner, id:String, shared_area:String="0"):
+																
 	assert(arrayPatterns.has(id))
 	var local_reset_counter:int = global_reset_counter
 	var bullets:Array
@@ -393,6 +391,7 @@ func spawn(spawner, id:String, shared_area:String="0"):
 	var pos:Vector2; var ori_angle:float;
 	var bullet_props:Dictionary; var queued_instance:Dictionary; var bID; var is_object:bool; var is_bullet_node:bool
 	var tw_endpos:Vector2;
+
 	while iter != 0:
 		if spawner == null: return
 		if spawner is Node2D:
@@ -540,7 +539,7 @@ func unactive_spawn(bullets:Array):
 		if B["state"] >= BState.Moving: continue
 		if B["source_node"] is RID: B["position"] = B["spawn_pos"] + poolBullets[B["source_node"]]["position"]
 		elif B["source_node"] is Dictionary: B["position"] = B["spawn_pos"] + B["source_node"]["position"]
-		else: B["position"] = B["spawn_pos"] + B["source_node"].global_position # warning: no idea what this case is
+		else: B["position"] = B["spawn_pos"] + B["source_node"].global_position
 
 func _spawn(bullets:Array):
 	var B:Dictionary
@@ -647,13 +646,13 @@ func init_special_variables(b:Dictionary, rid):
 		b['trig_types'] = trig_types
 		b['trig_iter'] = {}
 		if trig_types.has("TrigCol"): b["trig_collider"] = null
-#		if trig_types.has("TrigPos"): b["trig_collider"] = null
+														  
 		if trig_types.has("TrigSig"): b["trig_signal"] = null
 		if trig_types.has("TrigTime"): b["trig_timeout"] = false
 
-#	if bp.has("spec_rotating_speed"): b['bounces'] = bp["spec_rotating_speed"]
-#	if bp.has("homing_target") or bp.has("homing_position"):
-#		b['homing_target'] = bp["homing_target"]
+																			
+														  
+										   
 
 
 
@@ -697,7 +696,7 @@ func move_equation(B:Dictionary, props):
 		push_error(expression.get_error_text())
 		return
 
-	B["curveDir_index"] += 0.05 #TODO add speed
+	B["curveDir_index"] += 0.05
 	B["curve"] = expression.execute([B["curveDir_index"]])*100
 
 func move_homing(B:Dictionary, props, delta:float):
@@ -789,8 +788,8 @@ func bullet_movement(delta:float):
 			if B.has("spawn_pos") and not props.has("curve"): B["position"] += B["spawn_pos"]
 
 		# position triggers
-		if B.has("trig_container") and B["trig_types"].has("TrigPos") \
-			and (B["state"] == BState.Moving or not props["trigger_wait_for_shot"]):
+																 
+		if B.has("trig_container") and B["trig_types"].has("TrigPos") 			and (B["state"] == BState.Moving or not props["trigger_wait_for_shot"]):
 				B["trig_container"].checkTriggers(B,b)
 
 		# homing on nearest anywhen
@@ -822,11 +821,11 @@ func _apply_movement(B:Dictionary, b:RID, props:Dictionary):
 
 	# move shapes
 	if not props.get("spec_no_collision", false):
-		Phys.area_set_shape_transform(shared_rid, bullet_index, \
-										Transform2D(B["rotation"]+B.get("rot_index",0), \
-													B.get("scale",Vector2(props["scale"],props["scale"])), \
-													props.get("skew",0), \
-													B["position"]))
+		Phys.area_set_shape_transform(shared_rid, bullet_index, 										Transform2D(B["rotation"]+B.get("rot_index",0), 													B.get("scale",Vector2(props["scale"],props["scale"])), 													props.get("skew",0), 													B["position"]))
+														   
+																	 
+								   
+							
 	# active collision for new bullets
 	if B["shape_disabled"]:
 		if not props.get("spec_no_collision", false):
@@ -841,10 +840,10 @@ func _calculate_bullets_index(from_index:int=-1):
 			for b_index in area.get_meta("ShapeCount"):
 				Brid = get_RID_from_index(shared_rid,b_index)
 				_update_shape_indexes(Brid, b_index, B["shared_area"].name)
-				#shape_indexes[Brid] = b_index
-#	else: # TODO : add optimisation
-#		for index in shape_indexes.values():
-#			if
+								  
+								 
+									   
+	  
 
 func _update_shape_indexes(rid, index:int, area:String):
 	shape_indexes[rid] = index
@@ -884,11 +883,25 @@ func modulate_bullet(b:Dictionary, texture:Texture):
 		if b["modulate_index"] >= 1: b["modulate_index"] = 0
 	else: draw_texture(texture,-texture.get_size()/2,b["props"]["spec_modulate"].get_color(0))
 
-func _draw():
+func _draw() -> void:
 	if Engine.is_editor_hint(): return
-	viewrect = get_viewport().get_visible_rect()
+	
+	# 1. Get the current camera transform applied by PhantomCamera2D
+	var canvas_transform: Transform2D = get_canvas_transform()
+	var canvas_scale: Vector2 = canvas_transform.get_scale()
+	
+	# 2. Calculate the top-left origin of the camera in world space
+	var view_origin: Vector2 = -canvas_transform.get_origin() / canvas_scale
+	
+	# 3. Calculate the actual size of the viewport divided by zoom
+	var view_size: Vector2 = get_viewport_rect().size / canvas_scale
+	
+	# 4. Create the Rect2 and expand it by a margin (e.g., 100 pixels) 
+	#    so bullets don't visibly pop out of existence at the exact edge.
+	viewrect = Rect2(view_origin, view_size).grow(100.0)
 
-	var texture:Texture; var b
+					   
+	var texture:Texture2D; var b:Dictionary
 	for B in poolBullets.keys():
 		b = poolBullets[B]
 
@@ -903,15 +916,15 @@ func _draw():
 			for l in 3:
 				draw_line(b["trail"][l],b["trail"][l+1],b["props"]["spec_trail_modulate"],b["props"]["spec_trail_width"])
 
-		if (not (b["state"] >= BState.Spawning and viewrect.has_point(b["position"]))) or \
-			(b["props"].has("spec_modulate") and b["props"].has("spec_modulate_loop") and \
-			b["props"]["spec_modulate"].get_color(0).a == 0):
+		if (not (b["state"] >= BState.Spawning and viewrect.has_point(b["position"]))) or 			(b["props"].has("spec_modulate") and b["props"].has("spec_modulate_loop") and 			b["props"]["spec_modulate"].get_color(0).a == 0):
+																				  
+													
 				continue
 
 		texture = get_texture_frame(b, B)
 		draw_set_transform_matrix(Transform2D(b["rotation"]+b.get("rot_index",0),
-									b.get("scale", Vector2(b["props"]["scale"]*b["anim"][ANIM.SCALE],b["props"]["scale"]*b["anim"][ANIM.SCALE])), \
-									b["anim"][ANIM.SKEW], b["position"]))
+									b.get("scale", Vector2(b["props"]["scale"]*b["anim"][ANIM.SCALE],b["props"]["scale"]*b["anim"][ANIM.SCALE])), 									b["anim"][ANIM.SKEW], b["position"]))
+											  
 
 		if b["props"].has("spec_modulate"):
 			modulate_bullet(b, texture)
@@ -974,8 +987,8 @@ func clear_bullets_within_dist(target_pos, radius:float=STANDARD_BULLET_RADIUS):
 		if poolBullets[b]["position"].distance_to(target_pos) < radius:
 			delete_bullet(b)
 
-#func clear_all_offscreen_bullets():
-	#for b in poolBullets.keys(): check_bullet_culling(poolBullets[b],b)
+									
+																	 
 
 func delete_bullet(b):
 	if not poolBullets.has(b): return
@@ -1068,14 +1081,14 @@ func random_set(type:String, id:String, value:bool):
 		"pattern": res.has_random = value
 		"bullet": res["has_random"] = value
 
-# call : get_variation(base_prop, v.x, v.y, v.z)
+												
 func get_variation(mean:float, variance:float, limit_down=0, limit_up=0):
 	if limit_down != 0 and limit_up != 0:
 		return min(max(RAND.randfn(mean,variance),limit_down), limit_up)
 	elif limit_down != 0: return max(RAND.randfn(mean,variance),limit_down)
 	elif limit_up != 0: return min(RAND.randfn(mean,variance),limit_up)
 	else:
-		print(mean,variance," ",RAND.randfn(mean,variance))
+													 
 		return RAND.randfn(mean,variance)
 
 func get_choice_string(list:String):
@@ -1088,7 +1101,7 @@ func get_choice_array(list:Array):
 ### HOMING ###
 
 func edit_special_target(var_name:String, path:Node2D):
-	set_meta("ST_"+var_name, path) # set path to null to remove_at meta variable
+	set_meta("ST_"+var_name, path)
 
 func get_special_target(var_name:String):
 	return get_meta("ST_"+var_name)
@@ -1160,7 +1173,7 @@ func trig_timeout(b, rid):
 #§§§§§§§§§§§§§ COLLISIONS §§§§§§§§§§§§§
 
 func bullet_collide_area(area_rid:RID,area:Area2D,area_shape_index:int,local_shape_index:int,shared_area:Area2D) -> void:
-	############## go to CUSTOM if you want to implement custom behavior
+																	 
 	CUSTOM.bullet_collide_area(area_rid, area, area_shape_index, local_shape_index, shared_area)
 
 func bullet_collide_body(body_rid:RID,body:Node,body_shape_index:int,local_shape_index:int,shared_area:Area2D) -> void:
@@ -1170,10 +1183,10 @@ func bullet_collide_body(body_rid:RID,body:Node,body_shape_index:int,local_shape
 		if not poolBullets.has(rid): return
 	var B = poolBullets[rid]
 
-#	if B["props"].has("spec_angle_no_collision"):
-#		var angle:float = B["position"].angle_to_point(body.global_position)
+											   
+																	   
 
-	############## go to CUSTOM if you want to implement custom behavior
+																	 
 	CUSTOM.bullet_collide_body(body_rid, body, body_shape_index, local_shape_index, shared_area, B, rid)
 
 	bullet_collided_body.emit(body, body_shape_index, B, local_shape_index, shared_area)
@@ -1193,7 +1206,7 @@ func bullet_collide_body(body_rid:RID,body:Node,body_shape_index:int,local_shape
 		delete_bullet(rid)
 
 func bounce(B:Dictionary, shared_area:Area2D):
-	if not B.has("colID"): return #TODO support custom bullet nodes
+	if not B.has("colID"): return
 	$Bouncy/CollisionShape2D.set_deferred("shape", B["colID"][0])
 	$Bouncy.collision_layer = shared_area.collision_layer
 	$Bouncy.collision_mask = shared_area.collision_mask
@@ -1241,18 +1254,18 @@ func match_rand_prop(original:String) -> String:
 		"angle": return "r_angle"
 		"groups": return "r_groups"
 		"death_after_time": return "r_death_after"
-		"anim_idle_texture": return "r_" #-----------------------
+		"anim_idle_texture": return "r_"
 		"a_direction_equation": return "r_dir_equation"
 		"curve": return "r_curve"
 		"a_speed_multiplier": return "r_speed_multi_curve"
 		"a_speed_multi_iterations": return "r_speed_multi_iter"
 		"spec_bounces": return "r_bounce"
-#		"spec_no_collision": return "r_"
+								   
 		"spec_modulate": return "r_modulate"
 		"spec_rotating_speed": return "r_rotating"
-#		"spec_trail_length": return "r_"
-#		"spec_trail_width": return "r_"
-#		"spec_trail_modulate": return "r_"
+								   
+								  
+									 
 		"trigger_container": return "r_trigger"
 		"homing_target": return "r_homing_target"
 		"homing_special_target": return "r_special_target"
