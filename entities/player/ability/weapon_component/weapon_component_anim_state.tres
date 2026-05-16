@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="animState" format=3 uid="uid://ck1h8up16goyg"]
-
-[ext_resource type="Script" uid="uid://dwk3r1dm7jxko" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="1_p5qck"]
-
-[resource]
-script = ExtResource("1_p5qck")
-texture = "weapon_component"
-metadata/_custom_type_script = "uid://dwk3r1dm7jxko"
