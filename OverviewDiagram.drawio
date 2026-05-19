@@ -1,0 +1,93 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="z-rIiadiYxyEMZ9zPibk">
+    <mxGraphModel dx="1212" dy="1192" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="wThWix4Ls4PhjM9733FO-4" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="wThWix4Ls4PhjM9733FO-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1170FF;strokeColor=#041630;" value="00_Level_Lobby" vertex="1">
+          <mxGeometry height="60" width="120" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-7" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="wThWix4Ls4PhjM9733FO-6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-10" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="wThWix4Ls4PhjM9733FO-9" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4B996D;strokeColor=#000000;" value="Host_Join_Screen" vertex="1">
+          <mxGeometry height="60" width="120" x="40" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-12" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="wThWix4Ls4PhjM9733FO-11" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-6" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#00CCCC;strokeColor=#000000;rounded=1;" value="Host Server&lt;div&gt;_on_host_pressed()&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="130" x="230" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-14" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="wThWix4Ls4PhjM9733FO-13" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-9" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#00CCCC;strokeColor=#000000;rounded=1;" value="Join Server&lt;div&gt;_on_join_pressed&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="130" x="230" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-16" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="wThWix4Ls4PhjM9733FO-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-11" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#f8cecc;strokeColor=light-dark(#000000, #d7817e);rounded=1;fontColor=#190053;" value="_go_to_lobby()&lt;div&gt;Change Scene to File(00_level_template.tscn)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="220" x="430" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-13" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#f8cecc;strokeColor=light-dark(#000000, #d7817e);rounded=1;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=#190053;" value="NetworkManager.join_game(ip)" vertex="1">
+          <mxGeometry height="60" width="225" x="425" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-19" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="wThWix4Ls4PhjM9733FO-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-23" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="wThWix4Ls4PhjM9733FO-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1170FF;strokeColor=#041630;" value="00_Level_Template" vertex="1">
+          <mxGeometry height="60" width="120" x="740" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-21" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="wThWix4Ls4PhjM9733FO-20" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-18" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#f8cecc;strokeColor=light-dark(#000000, #d7817e);rounded=1;fontColor=#190053;" value="_spawn_initial_active_equipment()" vertex="1">
+          <mxGeometry height="60" width="240" x="900" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-20" parent="1" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;" value="Spawn initial drops in current scene/level" vertex="1">
+          <mxGeometry height="80" width="200" x="920" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-25" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="wThWix4Ls4PhjM9733FO-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-27" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="wThWix4Ls4PhjM9733FO-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-22" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#f8cecc;strokeColor=light-dark(#000000, #d7817e);rounded=1;fontColor=#190053;" value="_on_peer_connected()&lt;div&gt;Spawn Player&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="240" x="900" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-24" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#f8cecc;strokeColor=light-dark(#000000, #d7817e);rounded=1;fontColor=#190053;" value="_on_player_spawned()&lt;div&gt;Creates the off screen indicator&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="240" x="1200" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-28" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="wThWix4Ls4PhjM9733FO-29">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1020" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-31" edge="1" parent="1" source="wThWix4Ls4PhjM9733FO-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="wThWix4Ls4PhjM9733FO-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-26" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1170FF;strokeColor=#041630;" value="SlaetPlayer" vertex="1">
+          <mxGeometry height="60" width="120" x="960" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-29" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#f8cecc;strokeColor=light-dark(#000000, #d7817e);rounded=1;fontColor=#190053;" value="_on_ready()&lt;div&gt;Calls the $ActiveEquipmentComponent to add a default weapon to inventory.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="240" x="900" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="wThWix4Ls4PhjM9733FO-30" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#f8cecc;strokeColor=light-dark(#000000, #d7817e);rounded=1;fontColor=#190053;" value="_rollback_tick()&lt;div&gt;_rpc_fire_bullets.rpc()&lt;/div&gt;&lt;div&gt;Fires the weapons in players inventory&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="240" x="1170" y="570" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
