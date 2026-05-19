@@ -5,43 +5,42 @@ extends CharacterBody2D
 @export var speed: float = 600.0
 @export var acceleration: float = 4500.0 
 @export var friction: float = 4500.0
-@export var tex_walk_side: Texture2D
-@export var tex_walk_up: Texture2D   
-@export var tex_walk_down: Texture2D 
+
+@onready var default_weapon_path: String = "res://systems/active_equipment_manager/default_mushroom/default_mushroom.tres"
 
 # --- Netfox Synchronized Properties ---
 # Both movement and combat intent MUST be exported here and tracked by the RollbackSynchronizer
 @export var _input_vector: Vector2 = Vector2.ZERO
-@export_file("*.tres") var default_weapon_path: String = ""
+
 # --- Node References ---
-@onready var state_chart: StateChart = $StateChart as StateChart
 @onready var sprite: Sprite2D = $Visuals/PlayerSprite as Sprite2D
 @onready var rollback_sync: RollbackSynchronizer = $RollbackSynchronizer as RollbackSynchronizer
 @onready var joystick: VirtualJoystickComponent = $UI/VirtualJoystickComponent as VirtualJoystickComponent
-@onready var active_equipment: ActivePlayerEquipment = $ActivePlayerEquipment as ActivePlayerEquipment
 
-# --- Private Movement State ---
-var _is_currently_moving: bool = false
-	
+# COMPONENT DELEGATION: We route all weapon logic to this child node
+@onready var equipment_component: ActiveEquipmentComponent = $ActiveEquipmentComponent as ActiveEquipmentComponent
+
+# Textures
+@onready var tex_walk_side: Texture2D = load("res://assets/textures/player/MushWalk.png")
+@onready var tex_walk_up: Texture2D = load("res://assets/textures/player/MushWalkUp.png")
+@onready var tex_walk_down: Texture2D = load("res://assets/textures/player/MushIdle.png")
+
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 
 func _ready() -> void:
 	if is_multiplayer_authority():
 		call_deferred("_claim_local_camera", self)
-		
-	# EVERY machine (Server and Clients) loads the default weapon locally.
-	# This completely eliminates the RPC race condition!
-	if default_weapon_path != "":
-		active_equipment.initialize_default_weapon(default_weapon_path, 0)
-	else:
-		push_warning("Player spawned without a default_weapon_path assigned in the Inspector.")				
+	
+	# ONLY the Server acts as the authority to initialize loadouts
+	if equipment_component != null:
+			equipment_component.grant_default_weapon(default_weapon_path)
+
 func _process(_delta: float) -> void:
 	if is_multiplayer_authority():
 		_poll_local_inputs()
 	
 	_update_sprite_direction()
-	_update_animation_state()
 
 func _poll_local_inputs() -> void:
 	var keyboard_input: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -55,8 +54,9 @@ func _poll_local_inputs() -> void:
 	
 func _rollback_tick(delta: float, tick: int, is_fresh: bool) -> void:
 	_apply_kinematics(delta)
-	# Delegate combat execution to the separated component, passing the synchronized input
-	active_equipment.process_weapons(tick, is_fresh)
+	
+	# Delegate combat execution to the separated component
+	equipment_component.process_weapons(tick, is_fresh)
 
 func _apply_kinematics(delta: float) -> void:
 	var target_velocity: Vector2 = _input_vector * speed
@@ -79,16 +79,6 @@ func _update_sprite_direction() -> void:
 		sprite.flip_h = false
 		sprite.texture = tex_walk_down if velocity.y > 0.0 else tex_walk_up
 
-func _update_animation_state() -> void:
-	var moving: bool = velocity.length_squared() > 0.0
-	
-	if moving != _is_currently_moving:
-		_is_currently_moving = moving
-		if _is_currently_moving:
-			state_chart.send_event("move")
-		else:
-			state_chart.send_event("idle")
-			
 func _claim_local_camera(target_node: Node2D) -> void:
 	var pc_cam: PhantomCamera2D = get_tree().get_first_node_in_group(&"player_camera") as PhantomCamera2D
 	if pc_cam != null:

@@ -2,10 +2,13 @@ extends Node2D
 
 @export var _level_name: String = "Template"
 @export var player_scene: PackedScene
+@export var weapon_pickup_scene: PackedScene
 
 @onready var player_spawner: MultiplayerSpawner = $PlayerSpawner
+@onready var equipment_spawner: MultiplayerSpawner = $EquipmentSpawner
 @onready var spawn_locations: Node2D = $SpawnLocations
-@onready var local_client_hud: CanvasLayer = $LocalClientHUD # The strictly local UI layer
+@onready var local_client_hud: CanvasLayer = $LocalClientHUD
+
 const INDICATOR_SCENE: PackedScene = preload("res://ui/hud/off_screen_indicator.tscn") 
 
 var _available_spawn_points: Array[Node] = []
@@ -13,11 +16,15 @@ var _player_spawn_map: Dictionary = {}
 var _has_local_player: bool = false
 
 func _ready() -> void:
+	equipment_spawner.spawn_function = _custom_equipment_spawn
 	if player_scene == null:
 		LogManager.error(_level_name, "Player scene is not assigned!")
 		return
-		
-	# 1. Custom spawn mapping
+	if weapon_pickup_scene == null:
+		LogManager.error(_level_name, "Weapon pickup scene is not assigned!")
+		return
+	
+	# 1. Custom spawn mapping for players
 	player_spawner.spawn_function = _custom_spawn
 	
 	# 2. Listen for ANY player being spawned by the server
@@ -34,7 +41,37 @@ func _ready() -> void:
 		multiplayer.peer_connected.connect(_on_peer_connected)
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 		_spawn_player(multiplayer.get_unique_id())
+		
+		# NEW: Spawn the initial level loot
+		# We use call_deferred to ensure the scene tree is fully ready before spawning
+		call_deferred("_spawn_initial_active_equipment","res://entities/active_equipment/default.tres")
 
+# --- NEW: LOOT SPAWNING LOGIC (Server Only) ---
+func _custom_equipment_spawn(data: Variant) -> Node:
+	# 1. Instantiate the scene locally
+	var pickup: WeaponPickup = weapon_pickup_scene.instantiate() as WeaponPickup
+	
+	# 2. Apply the synchronized data
+	pickup.global_position = data["pos"]
+	pickup.weapon_resource_path = data["path"]
+	
+	# 3. Return the node. The spawner will automatically add it to the tree!
+	return pickup
+func _spawn_initial_active_equipment(_active_equipment_drop: String) -> void:
+	if not multiplayer.is_server():
+		return
+		
+	# 1. Package the specific data we want the clients to know about
+	var spawn_data: Dictionary = {
+		"pos": Vector2(-199, -115),
+		"path": _active_equipment_drop
+	}
+	
+	# 2. Call spawn() with the data. 
+	# This automatically runs _custom_equipment_spawn() on all machines
+	# and adds the node to the equipment_spawner's spawn_path.
+	equipment_spawner.spawn(spawn_data)
+# --- PLAYER SPAWNING LOGIC ---
 func _on_peer_connected(id: int) -> void:
 	_spawn_player(id)
 
@@ -66,8 +103,7 @@ func _spawn_player(id: int) -> void:
 	# 1. Capture the node that the Spawner creates
 	var spawned_node: Node = player_spawner.spawn(spawn_data)
 	
-	# 2. MANUALLY trigger the UI logic for the Server/Host, 
-	# since the 'spawned' signal won't fire locally for them.
+	# 2. MANUALLY trigger the UI logic for the Server/Host
 	_on_player_spawned(spawned_node)
 
 func _custom_spawn(data: Variant) -> Node:
@@ -77,24 +113,22 @@ func _custom_spawn(data: Variant) -> Node:
 	player.set_multiplayer_authority(data["id"])
 	return player
 
-# --- NEW: CLIENT-SIDE UI LOGIC ---
-
+# --- CLIENT-SIDE UI LOGIC ---
 func _on_player_spawned(spawned_node: Node) -> void:
 	var player_node: Player = spawned_node as Player
 	if player_node == null:
 		return
 		
 	if player_node.get_multiplayer_authority() == multiplayer.get_unique_id():
-		# It's me! Wake up the UI and find everyone already playing.
+		# It's me!
 		_has_local_player = true
 		_setup_indicators_for_existing(player_node)
 	else:
-		# It's someone else! If I am already playing, track them.
+		# It's someone else!
 		if _has_local_player:
 			_create_indicator_for(player_node)
 
 func _setup_indicators_for_existing(my_player: Player) -> void:
-	# Use the group system to find all currently spawned players
 	var all_players: Array[Node] = get_tree().get_nodes_in_group("players")
 	
 	for other_player in all_players:
@@ -105,9 +139,7 @@ func _create_indicator_for(target_player: Player) -> void:
 	if target_player == null:
 		return
 		
-	# Instantiate using our preloaded constant
 	var indicator: OffScreenIndicator = INDICATOR_SCENE.instantiate() as OffScreenIndicator
 	indicator.target_player = target_player
 	
-	# Add it to the local CanvasLayer
 	local_client_hud.add_child(indicator)

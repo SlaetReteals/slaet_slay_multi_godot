@@ -1,0 +1,189 @@
+[gd_scene format=3 uid="uid://8oxv8wwte2ir"]
+
+[ext_resource type="Script" uid="uid://3hybkrb0sq6n" path="res://levels/00_level_lobby/00_level_template.gd" id="1_daua1"]
+[ext_resource type="PackedScene" uid="uid://8nsatcn6jr32" path="res://entities/player/slaet_player/slaet_player.tscn" id="2_p0i6d"]
+[ext_resource type="PackedScene" uid="uid://dhudnqypc48r2" path="res://ui/hud/off_screen_indicator.tscn" id="3_p0i6d"]
+[ext_resource type="PackedScene" uid="uid://dif2ggd7ov0ig" path="res://systems/player_camera/local_camera_system.tscn" id="3_x2fjv"]
+[ext_resource type="Texture2D" uid="uid://dnsvgqerccs7w" path="res://assets/textures/LevelMaps/ForestOutpost.png" id="4_o1uyc"]
+[ext_resource type="Script" uid="uid://bii0j3pljkqub" path="res://levels/00_level_lobby/menu.gd" id="4_x2fjv"]
+[ext_resource type="Script" uid="uid://hiknn0lvys08" path="res://systems/active_equipment_manager/active_equipment.gd" id="7_bm5ip"]
+[ext_resource type="Script" uid="uid://bl57xct8j47m5" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="8_ye6wi"]
+[ext_resource type="Script" uid="uid://dwk3r1dm7jxko" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="9_35wxo"]
+[ext_resource type="Script" uid="uid://5f7wk3urrogu" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="10_8phjn"]
+[ext_resource type="Script" uid="uid://bhjpxssuqe6ak" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="11_xqc7w"]
+[ext_resource type="Script" uid="uid://c8a1dhkpy7mp3" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="12_w71da"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x2fjv"]
+radius = 58.0
+height = 152.0
+
+[sub_resource type="Curve2D" id="Curve2D_4rswp"]
+
+[sub_resource type="Curve" id="Curve_22m4j"]
+
+[sub_resource type="Curve" id="Curve_nct07"]
+
+[sub_resource type="PackedDataContainer" id="PackedDataContainer_05qet"]
+script = ExtResource("10_8phjn")
+damage = 1.0
+speed = 100.0
+scale = 1.0
+angle = 0.0
+groups = PackedStringArray()
+spec_bounces = 0
+spec_no_collision = false
+spec_modulate_loop = 0.0
+spec_trail_length = 0.0
+spec_trail_width = 0.0
+spec_trail_modulate = Color(1, 1, 1, 1)
+spec_rotating_speed = 0.0
+death_after_time = 30.0
+death_outside_box = Rect2(0, 0, 0, 0)
+death_from_collision = true
+a_direction_equation = ""
+a_curve_movement = 0
+a_speed_multiplier = SubResource("Curve_22m4j")
+a_speed_multi_iterations = 0
+a_speed_multi_scale = 0.0
+trigger_container = ""
+trigger_wait_for_shot = true
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+scale_multi_iterations = 0
+scale_multiplier = SubResource("Curve_nct07")
+scale_multi_scale = 1.0
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_oh5ka"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_7dky5"]
+resource_name = "PatternOne"
+script = ExtResource("12_w71da")
+bullet = "onez"
+metadata/_custom_type_script = "uid://c8a1dhkpy7mp3"
+
+[node name="00LevelTemplate" type="Node2D" unique_id=462889802]
+script = ExtResource("1_daua1")
+player_scene = ExtResource("2_p0i6d")
+
+[node name="LocalClientHUD" type="CanvasLayer" parent="." unique_id=2139773765]
+
+[node name="OffScreenIndicator" parent="LocalClientHUD" unique_id=1955977937 instance=ExtResource("3_p0i6d")]
+
+[node name="Menu" type="CanvasLayer" parent="LocalClientHUD" unique_id=19782223 node_paths=PackedStringArray("slide_panel", "pull_button")]
+script = ExtResource("4_x2fjv")
+slide_panel = NodePath("Panel")
+pull_button = NodePath("Button")
+
+[node name="Panel" type="Panel" parent="LocalClientHUD/Menu" unique_id=1042427411]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="LocalClientHUD/Menu" unique_id=688496959]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="SpawnLocations" type="Node2D" parent="." unique_id=221263325]
+
+[node name="ClientSpawn" type="Marker2D" parent="SpawnLocations" unique_id=498859325]
+position = Vector2(500, 0)
+
+[node name="HostSpawn" type="Marker2D" parent="SpawnLocations" unique_id=1198802280]
+position = Vector2(-500, 0)
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=761377485]
+_spawnable_scenes = PackedStringArray("uid://8nsatcn6jr32", "uid://dxkkwvxr1mp63")
+spawn_path = NodePath("..")
+
+[node name="LocalCameraSystem" parent="." unique_id=1673122289 instance=ExtResource("3_x2fjv")]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=677159773]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1288851931]
+
+[node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1488125169]
+scale = Vector2(2, 2)
+texture = ExtResource("4_o1uyc")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1443670912]
+
+[node name="Barrel" type="CollisionShape2D" parent="StaticBody2D" unique_id=1305474762]
+position = Vector2(343, -352)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="Barrel2" type="CollisionShape2D" parent="StaticBody2D" unique_id=1475478123]
+position = Vector2(1035, -143)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="Barrel3" type="CollisionShape2D" parent="StaticBody2D" unique_id=1234185673]
+position = Vector2(-284, -1193)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="Barrel4" type="CollisionShape2D" parent="StaticBody2D" unique_id=1424046641]
+position = Vector2(-182, -328)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="Barrel5" type="CollisionShape2D" parent="StaticBody2D" unique_id=1541706726]
+position = Vector2(-623, -1204)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="Barrel6" type="CollisionShape2D" parent="StaticBody2D" unique_id=1117338632]
+position = Vector2(-412, -1197)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="ActiveEquipmentManager" type="Node2D" parent="." unique_id=1740721775]
+script = ExtResource("7_bm5ip")
+
+[node name="BulletPattern" type="Path2D" parent="ActiveEquipmentManager" unique_id=41299217]
+curve = SubResource("Curve2D_4rswp")
+script = ExtResource("8_ye6wi")
+id = "onez"
+props = SubResource("PackedDataContainer_05qet")
+metadata/_custom_type_script = "uid://bl57xct8j47m5"
+
+[node name="SpawnPattern" type="Path2D" parent="ActiveEquipmentManager" unique_id=557164749]
+curve = SubResource("Curve2D_oh5ka")
+script = ExtResource("11_xqc7w")
+id = "onez"
+pattern = SubResource("NavigationPolygon_7dky5")
+metadata/_custom_type_script = "uid://bhjpxssuqe6ak"

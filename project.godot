@@ -37,11 +37,12 @@ MetaProgression="*uid://dhloe2yhcfmpd"
 ScreenTransition="*uid://btae5d3enx63l"
 LogManager="*uid://bbqq4f2t8emm1"
 NetworkManager="*uid://d3iltvab3tx3u"
+ActiveEquipmentLibrary="*uid://d21mp38saokep"
 
 [display]
 
-window/size/viewport_width=1080
-window/size/viewport_height=1920
+window/size/viewport_width=540
+window/size/viewport_height=960
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1

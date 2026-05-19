@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3 uid="uid://b6c4lm5qq2wd5"]
+
+[ext_resource type="Script" uid="uid://bl531kois1qnr" path="res://systems/active_equipment_manager/weapon_data.gd" id="1_7o6b3"]
+
+[resource]
+script = ExtResource("1_7o6b3")
+pattern_id = "spawn_basic"
+metadata/_custom_type_script = "uid://bl531kois1qnr"

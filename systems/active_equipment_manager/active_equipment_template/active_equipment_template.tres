@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="WeaponData" format=3 uid="uid://cr4ocouyhvvho"]
 
-[ext_resource type="Script" uid="uid://bl531kois1qnr" path="res://entities/player/active_player_equipment/weapon_data.gd" id="1_h4wnq"]
+[ext_resource type="Script" uid="uid://bl531kois1qnr" path="res://systems/active_equipment_manager/weapon_data.gd" id="1_h4wnq"]
 
 [resource]
 script = ExtResource("1_h4wnq")
-pattern_id = "onez"
+pattern_id = "spawn_circle"
 metadata/_custom_type_script = "uid://bl531kois1qnr"
