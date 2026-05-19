@@ -4,7 +4,6 @@ extends Control
 @onready var serverscan_button: Button = $BoxContainer/HBoxContainer/VBoxContainer/ServerScanButton
 @onready var server_ip: Button = $BoxContainer/HBoxContainer/VBoxContainer/Server
 @onready var scan_timeout: Timer = $ScanTimeout
-#@onready var server_list: VBoxContainer = $BoxContainer/HBoxContainer/VBoxContainer/ServerList
 func _ready() -> void:
 	host_button.pressed.connect(_on_host_pressed)
 	serverscan_button.pressed.connect(_on_scan_pressed)
@@ -26,24 +25,7 @@ func _on_host_pressed() -> void:
 
 func _on_scan_pressed() -> void:
 	LogManager.info("on_scan_pressed", "Scanning local network...")
-	
-	## --- Debug Popup ---
-	#var debug_dialog: AcceptDialog = AcceptDialog.new()
-	#debug_dialog.title = "Debug: LAN Scan"
-	#debug_dialog.dialog_text = "Initiating UDP Broadcast...\nTarget Port: " + str(NetworkManager.PORT) + "\nClearing cached UI elements."
-	#
-	## Add to the tree and display
-	#add_child(debug_dialog)
-	#debug_dialog.popup_centered()
-	#
-	## Ensure the node frees itself when closed to prevent memory leaks
-	#debug_dialog.confirmed.connect(debug_dialog.queue_free)
-	#debug_dialog.canceled.connect(debug_dialog.queue_free)
-	## -------------------
-	
-	# Clear out any old buttons from previous scans
-#	for child: Node in server_list.get_children():
-#		child.queue_free()
+
 	server_ip.text = "Scanning..."
 	NetworkManager.scan_local_network()
 	scan_timeout.start()
@@ -53,14 +35,6 @@ func _on_server_discovered(ip: String) -> void:
 	
 	server_ip.text = ip
 	server_ip.pressed.connect(_on_join_server_pressed.bind(ip))
-	
-	# Create a new button for this specific server
-	#var btn: Button = Button.new()
-	#btn.text = "Join Server: " + ip
-	
-	# .bind(ip) passes the specific string to the function when pressed
-	#btn.pressed.connect(_on_join_server_pressed.bind(ip))
-#	server_list.add_child(btn)
 
 func _on_join_server_pressed(ip: String) -> void:
 	LogManager.info("on_join_server_pressed","Joining " + ip + "...")

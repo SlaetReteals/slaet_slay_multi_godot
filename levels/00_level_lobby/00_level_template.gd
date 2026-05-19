@@ -2,10 +2,10 @@ extends Node2D
 
 @export var _level_name: String = "Template"
 @export var player_scene: PackedScene
-@export var weapon_pickup_scene: PackedScene
+@export var spawn_static_active_equipment: PackedScene
 
 @onready var player_spawner: MultiplayerSpawner = $PlayerSpawner
-@onready var equipment_spawner: MultiplayerSpawner = $EquipmentSpawner
+@onready var active_equipment_spawner: MultiplayerSpawner = $EquipmentSpawner
 @onready var spawn_locations: Node2D = $SpawnLocations
 @onready var local_client_hud: CanvasLayer = $LocalClientHUD
 
@@ -16,11 +16,11 @@ var _player_spawn_map: Dictionary = {}
 var _has_local_player: bool = false
 
 func _ready() -> void:
-	equipment_spawner.spawn_function = _custom_equipment_spawn
+	active_equipment_spawner.spawn_function = _spawn_active_equipment
 	if player_scene == null:
 		LogManager.error(_level_name, "Player scene is not assigned!")
 		return
-	if weapon_pickup_scene == null:
+	if spawn_static_active_equipment == null:
 		LogManager.error(_level_name, "Weapon pickup scene is not assigned!")
 		return
 	
@@ -44,20 +44,21 @@ func _ready() -> void:
 		
 		# NEW: Spawn the initial level loot
 		# We use call_deferred to ensure the scene tree is fully ready before spawning
-		call_deferred("_spawn_initial_active_equipment","res://entities/active_equipment/default.tres")
+		call_deferred("_spawn_static_level_active_equipment","res://entities/active_equipment/default.tres")
 
 # --- NEW: LOOT SPAWNING LOGIC (Server Only) ---
-func _custom_equipment_spawn(data: Variant) -> Node:
+func _spawn_active_equipment(data: Variant) -> Node:
 	# 1. Instantiate the scene locally
-	var pickup: WeaponPickup = weapon_pickup_scene.instantiate() as WeaponPickup
+	var spawn_active_equipment: SpawnActiveEquipment = spawn_static_active_equipment.instantiate() as SpawnActiveEquipment
 	
 	# 2. Apply the synchronized data
-	pickup.global_position = data["pos"]
-	pickup.weapon_resource_path = data["path"]
+	spawn_active_equipment.global_position = data["pos"]
+	spawn_active_equipment.equipment_resource_path = data["path"]
 	
-	# 3. Return the node. The spawner will automatically add it to the tree!
-	return pickup
-func _spawn_initial_active_equipment(_active_equipment_drop: String) -> void:
+	## 3. Return the node. The spawner will automatically add it to the tree!
+	return spawn_active_equipment
+	
+func _spawn_static_level_active_equipment(_active_equipment_drop: String) -> void:
 	if not multiplayer.is_server():
 		return
 		
@@ -68,9 +69,9 @@ func _spawn_initial_active_equipment(_active_equipment_drop: String) -> void:
 	}
 	
 	# 2. Call spawn() with the data. 
-	# This automatically runs _custom_equipment_spawn() on all machines
+	# This automatically runs _spawn_active_equipment() on all machines
 	# and adds the node to the equipment_spawner's spawn_path.
-	equipment_spawner.spawn(spawn_data)
+	active_equipment_spawner.spawn(spawn_data)
 # --- PLAYER SPAWNING LOGIC ---
 func _on_peer_connected(id: int) -> void:
 	_spawn_player(id)

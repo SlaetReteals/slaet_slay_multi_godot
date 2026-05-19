@@ -1,0 +1,80 @@
+<mxfile version="24.2.5">
+  <diagram id="slaet_slayer_multi" name="Slaet Slayer Multi Architecture">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- MainArena Scene -->
+        <mxCell id="Scene_MainArena" value="Scene: MainArena&#xa;(Server Authority)" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=140;tabHeight=30;tabPosition=left;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="300" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="Node_WaveManager" value="Node: WaveManager&#xa;syncs current_wave, timer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="Scene_MainArena">
+          <mxGeometry x="20" y="50" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Node_MultiplayerSpawner" value="Node: MultiplayerSpawner&#xa;(Staggered Spawn Logic)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="Scene_MainArena">
+          <mxGeometry x="20" y="110" width="260" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Player Scene -->
+        <mxCell id="Scene_Player" value="Scene: Player&#xa;(Client Predicted)" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=140;tabHeight=30;tabPosition=left;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="400" y="40" width="320" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="Node_RollbackSync" value="Component: RollbackSynchronizer&#xa;(Netfox _rollback_tick)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="Scene_Player">
+          <mxGeometry x="20" y="50" width="280" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Node_PhantomCamera" value="Node: PhantomCamera2D&#xa;(Client-Side Priority/Zoom)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="Scene_Player">
+          <mxGeometry x="20" y="110" width="280" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Node_PlayerStateChart" value="Component: StateChart&#xa;(Signals: state_entered)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="Scene_Player">
+          <mxGeometry x="20" y="170" width="280" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Enemy Scene -->
+        <mxCell id="Scene_Enemy" value="Scene: Enemy&#xa;(Server Nav / Local Render)" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=180;tabHeight=30;tabPosition=left;html=1;whiteSpace=wrap;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="400" y="340" width="320" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="Node_StateSync" value="Component: StateSynchronizer&#xa;(Netfox _tick)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="Scene_Enemy">
+          <mxGeometry x="20" y="50" width="280" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Node_EnemyStateChart" value="Component: StateChart&#xa;(Events: 'die', 'attack')" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="Scene_Enemy">
+          <mxGeometry x="20" y="110" width="280" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Node_SpawnPattern" value="Component: SpawnPatternComponent&#xa;(BulletUpHell local trigger)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="Scene_Enemy">
+          <mxGeometry x="20" y="170" width="280" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Script/Function Execution Flow -->
+        <mxCell id="Func_Spawn" value="_rpc_fire_bullets()&#xa;(Execute Locally)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="780" y="470" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Func_Die" value="send_event('die')&#xa;(Drop Loot, Local VFX)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="780" y="380" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Func_CamSet" value="set_follow_target()&#xa;(Local Client Auth)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="780" y="140" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="Edge_Spawn" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Node_MultiplayerSpawner" target="Scene_Enemy">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Edge_SpawnPlayer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Node_MultiplayerSpawner" target="Scene_Player">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Edge_AttackTrigger" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Node_EnemyStateChart" target="Node_SpawnPattern">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Edge_BulletExecution" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Node_SpawnPattern" target="Func_Spawn">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Edge_DeathExecution" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Node_EnemyStateChart" target="Func_Die">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Edge_CamExecution" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Node_PhantomCamera" target="Func_CamSet">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
