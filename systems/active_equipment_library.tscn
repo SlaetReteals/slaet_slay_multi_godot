@@ -224,26 +224,28 @@ metadata/_custom_type_script = "uid://bl57xct8j47m5"
 
 [node name="SpawnPattern" type="Node2D" parent="." unique_id=1736253256]
 
-[node name="SpawnBasic" type="Path2D" parent="SpawnPattern" unique_id=1721896369]
+[node name="BasicBullet" type="Node2D" parent="SpawnPattern" unique_id=680697291]
+
+[node name="SpawnBasic" type="Path2D" parent="SpawnPattern/BasicBullet" unique_id=1721896369]
 curve = SubResource("Curve2D_ifvyp")
 script = ExtResource("4_q1yy5")
 id = "spawn_basic"
 pattern = SubResource("NavigationPolygon_rnq2b")
 metadata/_custom_type_script = "uid://bhjpxssuqe6ak"
 
-[node name="SpawnCircle" type="Path2D" parent="SpawnPattern" unique_id=622696560]
+[node name="SpawnCircle" type="Path2D" parent="SpawnPattern/BasicBullet" unique_id=622696560]
 curve = SubResource("Curve2D_pdcad")
 script = ExtResource("4_q1yy5")
 id = "spawn_circle"
 pattern = SubResource("NavigationPolygon_jr67e")
 
-[node name="SpawnLine" type="Path2D" parent="SpawnPattern" unique_id=1625556776]
+[node name="SpawnLine" type="Path2D" parent="SpawnPattern/BasicBullet" unique_id=1625556776]
 curve = SubResource("Curve2D_pdcad")
 script = ExtResource("4_q1yy5")
 id = "spawn_line"
 pattern = SubResource("NavigationPolygon_amisj")
 
-[node name="SpawnS" type="Path2D" parent="SpawnPattern" unique_id=1469747139]
+[node name="SpawnS" type="Path2D" parent="SpawnPattern/BasicBullet" unique_id=1469747139]
 curve = SubResource("Curve2D_pdcad")
 script = ExtResource("4_q1yy5")
 id = "spawn_s"
