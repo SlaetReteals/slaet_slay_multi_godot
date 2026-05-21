@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dhudnqypc48r2" path="res://ui/hud/off_screen_indicator.tscn" id="3_p0i6d"]
 [ext_resource type="PackedScene" uid="uid://dif2ggd7ov0ig" path="res://systems/player_camera/local_camera_system.tscn" id="3_x2fjv"]
 [ext_resource type="Texture2D" uid="uid://dnsvgqerccs7w" path="res://assets/textures/LevelMaps/ForestOutpost.png" id="4_o1uyc"]
+[ext_resource type="PackedScene" uid="uid://c3k322teytd8e" path="res://systems/wave_manager/wave_manager.tscn" id="7_o1uyc"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x2fjv"]
 radius = 58.0
@@ -72,3 +73,5 @@ position = Vector2(-412, -1197)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="BulletPatterns" type="Node2D" parent="." unique_id=1253729188]
+
+[node name="WaveManager" parent="." unique_id=1216026279 instance=ExtResource("7_o1uyc")]

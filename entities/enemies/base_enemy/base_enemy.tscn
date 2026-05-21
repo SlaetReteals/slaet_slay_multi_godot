@@ -1,4 +1,64 @@
-[gd_scene format=3 uid="uid://rkg8r9uwv5gnm"]
+[gd_scene format=3 uid="uid://b3trf16wncxmk"]
 
-[node name="BaseEnemy" type="CharacterBody2D" unique_id=2502802679]
+[ext_resource type="Script" uid="uid://3lbngqcexe0l" path="res://addons/netfox/state-synchronizer.gd" id="1_6gtyw"]
+[ext_resource type="Script" uid="uid://7k68s4l82hnb" path="res://entities/enemies/base_enemy/base_enemy.gd" id="1_uu5dw"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="2_uu5dw"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="3_o4q74"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="4_pkybk"]
+[ext_resource type="Texture2D" uid="uid://dos1rys7xawt0" path="res://assets/textures/weapons/weapon_component/weapon_component.png" id="6_c8gv6"]
+[ext_resource type="PackedScene" uid="uid://dmegso3kjij1s" path="res://components/health_component.tscn" id="6_pkybk"]
+[ext_resource type="PackedScene" uid="uid://bdfm633tkddth" path="res://components/hitbox_component.tscn" id="7_c8gv6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uu5dw"]
+
+[node name="BaseEnemy" type="CharacterBody2D" unique_id=-1792164617]
+script = ExtResource("1_uu5dw")
 metadata/TemplateVersion = "1.4.0"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1123186217]
+shape = SubResource("CapsuleShape2D_uu5dw")
+
+[node name="StateSynchronizer" type="Node" parent="." unique_id=1018418676 node_paths=PackedStringArray("root")]
+script = ExtResource("1_6gtyw")
+root = NodePath("..")
+properties = Array[String]([":global_position", "HealthComponent:current_health"])
+metadata/_custom_type_script = "uid://3lbngqcexe0l"
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1339430323]
+
+[node name="StateChart" type="Node" parent="." unique_id=1628050640]
+script = ExtResource("2_uu5dw")
+metadata/_custom_type_script = "uid://couw105c3bde4"
+
+[node name="Root" type="Node" parent="StateChart" unique_id=1358111649]
+script = ExtResource("3_o4q74")
+initial_state = NodePath("Idle")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Idle" type="Node" parent="StateChart/Root" unique_id=286999359]
+script = ExtResource("4_pkybk")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="Chase" type="Node" parent="StateChart/Root" unique_id=1612212731]
+script = ExtResource("4_pkybk")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="Attack" type="Node" parent="StateChart/Root" unique_id=308339829]
+script = ExtResource("4_pkybk")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="Death" type="Node" parent="StateChart/Root" unique_id=1349080349]
+script = ExtResource("4_pkybk")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="Visuals" type="Node2D" parent="." unique_id=245637744]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals" unique_id=1805723102]
+texture = ExtResource("6_c8gv6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Visuals" unique_id=1393090425]
+root_node = NodePath("../Sprite2D")
+
+[node name="HealthComponent" parent="." unique_id=84471790 instance=ExtResource("6_pkybk")]
+
+[node name="HitboxComponent" parent="." unique_id=921323894 instance=ExtResource("7_c8gv6")]

@@ -1,9 +1,12 @@
 [gd_scene format=3 uid="uid://c3k322teytd8e"]
 
 [ext_resource type="Script" uid="uid://cc22q0t64jjoc" path="res://systems/wave_manager/wave_manager.gd" id="1_eb7yb"]
+[ext_resource type="PackedScene" uid="uid://b3trf16wncxmk" path="res://entities/enemies/base_enemy/base_enemy.tscn" id="2_1xfga"]
 
 [node name="WaveManager" type="Node" unique_id=1216026279]
 script = ExtResource("1_eb7yb")
+enemy_roster = Array[PackedScene]([ExtResource("2_1xfga")])
 
 [node name="EnemySpawner" type="MultiplayerSpawner" parent="." unique_id=1473953984]
+_spawnable_scenes = PackedStringArray("uid://b3trf16wncxmk")
 spawn_path = NodePath("..")
