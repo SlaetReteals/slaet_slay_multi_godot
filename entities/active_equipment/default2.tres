@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="BulletProp" format=3 uid="uid://ot0jq07x3kxk"]
+
+[ext_resource type="Script" uid="uid://bl531kois1qnr" path="res://systems/active_equipment_manager/active_equipment_data.gd" id="1_ild4c"]
+
+[resource]
+script = ExtResource("1_ild4c")
+pattern_id = "spawn_basic"
+shared_area = "basic"
+metadata/_custom_type_script = "uid://bl531kois1qnr"

@@ -13,7 +13,7 @@ func _ready() -> void:
 
 func _initialize_bullet_pools() -> void:
 	# Start the recursive scan from the root of this Autoload
-	_scan_and_pool($BulletPatterns)
+	_scan_and_pool($SpawnPattern)
 	print("ProjectileLibrary: All dynamic BulletUpHell pools successfully initialized.")
 
 func _scan_and_pool(parent_node: Node) -> void:
@@ -26,12 +26,13 @@ func _scan_and_pool(parent_node: Node) -> void:
 			# 2. Validate it's a valid String
 			if raw_id is String and raw_id != "":
 				var pattern_id: String = raw_id as String
-				
+				if raw_id.begins_with("spawn"):
+					pass
 				# 3. Create the pool if we haven't already
-				if not _initialized_pools.has(pattern_id):
-					Spawning.create_pool(pattern_id, "0", default_pool_size)
+				elif not _initialized_pools.has(pattern_id):
+
+					Spawning.create_pool(pattern_id, "10", default_pool_size)
 					_initialized_pools.append(pattern_id)
-					print("ProjectileLibrary: Auto-created pool for ID -> ", pattern_id)
 		
 		# 4. Recursion: If this child has its own children, scan them too!
 		if child.get_child_count() > 0:

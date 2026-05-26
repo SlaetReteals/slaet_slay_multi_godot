@@ -3,6 +3,7 @@ extends Path2D
 
 @export var id:String = ""
 @export var props:PackedDataContainer
+@export var shared_area = "0"
 
 const ATEXTURE:int = 0
 const ACOLLISION:int = 1

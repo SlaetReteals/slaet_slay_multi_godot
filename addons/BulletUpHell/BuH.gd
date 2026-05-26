@@ -1,7 +1,6 @@
 @tool
 extends EditorPlugin
 
-
 func _enter_tree():
 	add_custom_type("SpawnPattern", "Path2D", preload("res://addons/BulletUpHell/Nodes/BuHPattern.gd"), preload("res://addons/BulletUpHell/Sprites/NodeIcons1.png"))
 	add_custom_type("BulletPattern", "Path2D", preload("res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd"), preload("res://addons/BulletUpHell/Sprites/NodeIcons2.png"))

@@ -45,7 +45,8 @@ func _ready() -> void:
 		# NEW: Spawn the initial level loot
 		# We use call_deferred to ensure the scene tree is fully ready before spawning
 		call_deferred("_spawn_static_level_active_equipment","res://entities/active_equipment/default.tres")
-
+		
+		#4
 # --- NEW: LOOT SPAWNING LOGIC (Server Only) ---
 func _spawn_active_equipment(data: Variant) -> Node:
 	# 1. Instantiate the scene locally

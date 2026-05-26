@@ -25,8 +25,6 @@ class_name Pattern
 @export_range(0, 999999, 0.02, "hide_slider", "suffix:s") var cooldown_next_shoot:float = 0
 
 @export_group("Wait", "wait_")
-#enum LATENCE {stay, move, spin, follow, target}
-#@export var wait_latence = LATENCE.stay
 enum MOMENTUM{None, TRANS_LINEAR,TRANS_SINE,TRANS_QUINT,TRANS_QUART,TRANS_QUAD,TRANS_EXPO,TRANS_ELASTIC,TRANS_CUBIC, \
 				TRANS_CIRC,TRANS_BOUNCE,TRANS_BACK}
 @export var wait_tween_momentum:MOMENTUM = MOMENTUM.None

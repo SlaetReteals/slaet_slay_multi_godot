@@ -6,18 +6,28 @@
 [ext_resource type="PackedScene" uid="uid://dhudnqypc48r2" path="res://ui/hud/off_screen_indicator.tscn" id="3_p0i6d"]
 [ext_resource type="PackedScene" uid="uid://dif2ggd7ov0ig" path="res://systems/player_camera/local_camera_system.tscn" id="3_x2fjv"]
 [ext_resource type="Texture2D" uid="uid://dnsvgqerccs7w" path="res://assets/textures/LevelMaps/ForestOutpost.png" id="4_o1uyc"]
+[ext_resource type="Script" uid="uid://5qhv1iu2tppf" path="res://systems/session_manager.gd" id="4_wmkr8"]
 [ext_resource type="PackedScene" uid="uid://c3k322teytd8e" path="res://systems/wave_manager/wave_manager.tscn" id="7_o1uyc"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x2fjv"]
 radius = 58.0
 height = 152.0
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_o1uyc"]
+vertices = PackedVector2Array(1383.0469, -937.15625, 1397.9297, 1377.9766, -1392.0078, 1375.0078, -1394.9766, -1047.1172, 181.35938, -1234.8516)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(182, -1245, 1393, -945, 1408, 1388, -1402, 1385, -1405, -1056)])
+
 [node name="00LevelTemplate" type="Node2D" unique_id=462889802]
 script = ExtResource("1_daua1")
 player_scene = ExtResource("2_p0i6d")
 spawn_static_active_equipment = ExtResource("3_o1uyc")
 
-[node name="LocalClientHUD" type="CanvasLayer" parent="." unique_id=2139773765]
+[node name="SessionManager" type="Node" parent="." unique_id=1062260702 node_paths=PackedStringArray("player_spawn_container") groups=["session_manager"]]
+script = ExtResource("4_wmkr8")
+player_spawn_container = NodePath("..")
+
+[node name="LocalClientHUD" type="CanvasLayer" parent="." unique_id=2139773765 groups=["foreground_layer"]]
 
 [node name="OffScreenIndicator" parent="LocalClientHUD" unique_id=1955977937 instance=ExtResource("3_p0i6d")]
 
@@ -49,29 +59,35 @@ texture = ExtResource("4_o1uyc")
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1443670912]
 
 [node name="Barrel" type="CollisionShape2D" parent="StaticBody2D" unique_id=1305474762]
-position = Vector2(343, -352)
+position = Vector2(253, -442)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="Barrel2" type="CollisionShape2D" parent="StaticBody2D" unique_id=1475478123]
-position = Vector2(1035, -143)
+position = Vector2(938, -234)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="Barrel3" type="CollisionShape2D" parent="StaticBody2D" unique_id=1234185673]
-position = Vector2(-284, -1193)
+position = Vector2(-377, -1292)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="Barrel4" type="CollisionShape2D" parent="StaticBody2D" unique_id=1424046641]
-position = Vector2(-182, -328)
+position = Vector2(-276, -435)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="Barrel5" type="CollisionShape2D" parent="StaticBody2D" unique_id=1541706726]
-position = Vector2(-623, -1204)
+position = Vector2(-714, -1303)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="Barrel6" type="CollisionShape2D" parent="StaticBody2D" unique_id=1117338632]
-position = Vector2(-412, -1197)
+position = Vector2(-500, -1301)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="BulletPatterns" type="Node2D" parent="." unique_id=1253729188]
 
 [node name="WaveManager" parent="." unique_id=1216026279 instance=ExtResource("7_o1uyc")]
+spawn_interval_ticks = 30
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=950979034]
+navigation_polygon = SubResource("NavigationPolygon_o1uyc")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="NavigationRegion2D" unique_id=472451433]

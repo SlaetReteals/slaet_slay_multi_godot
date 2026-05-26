@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="WeaponData" format=3 uid="uid://c4m72uyrykcaa"]
+[gd_resource type="Resource" script_class="BulletProp" format=3 uid="uid://c4m72uyrykcaa"]
 
 [ext_resource type="Script" uid="uid://bl531kois1qnr" path="res://systems/active_equipment_manager/active_equipment_data.gd" id="1_d7rk2"]
 
 [resource]
 script = ExtResource("1_d7rk2")
-pattern_id = "spawn_circle"
+pattern_id = "spawn_firewand"
+fire_rate_ticks = 60
+shared_area = "firewand"
 metadata/_custom_type_script = "uid://bl531kois1qnr"

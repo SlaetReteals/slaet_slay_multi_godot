@@ -3,6 +3,12 @@
 [ext_resource type="FontFile" uid="uid://d3mtkkq72hmss" path="res://assets/theme/fonts/anonpro/AnonymousPro-Bold.ttf" id="1_24iqn"]
 [ext_resource type="FontFile" uid="uid://bmdvmcifegeut" path="res://assets/theme/fonts/anonpro/AnonymousPro-Regular.ttf" id="1_tqumk"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_24iqn"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wdqh0"]
+bg_color = Color(0.5931892, 0, 0.13974363, 1)
+
 [resource]
 default_font = ExtResource("1_tqumk")
 Button/colors/font_color = Color(0.82606, 0.82606006, 0.82606, 1)
@@ -29,3 +35,5 @@ Button/styles/focus = null
 Button/styles/hover = null
 Button/styles/normal = null
 Button/styles/pressed = null
+ProgressBar/styles/background = SubResource("StyleBoxFlat_24iqn")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_wdqh0")

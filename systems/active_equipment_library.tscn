@@ -12,11 +12,11 @@
 
 [sub_resource type="Curve2D" id="Curve2D_n8hue"]
 
-[sub_resource type="Curve" id="Curve_0jxd1"]
+[sub_resource type="Curve" id="Curve_aw8k1"]
 
-[sub_resource type="Curve" id="Curve_glo4i"]
+[sub_resource type="Curve" id="Curve_e7rcy"]
 
-[sub_resource type="PackedDataContainer" id="PackedDataContainer_sp0qb"]
+[sub_resource type="PackedDataContainer" id="PackedDataContainer_q1yy5"]
 script = ExtResource("3_e7rcy")
 damage = 1.0
 speed = 100.0
@@ -35,7 +35,7 @@ death_outside_box = Rect2(0, 0, 0, 0)
 death_from_collision = true
 a_direction_equation = ""
 a_curve_movement = 0
-a_speed_multiplier = SubResource("Curve_0jxd1")
+a_speed_multiplier = SubResource("Curve_aw8k1")
 a_speed_multi_iterations = 0
 a_speed_multi_scale = 0.0
 trigger_container = ""
@@ -46,7 +46,7 @@ homing_steer = 0.0
 homing_time_start = 0.0
 homing_duration = 999.0
 scale_multi_iterations = 0
-scale_multiplier = SubResource("Curve_glo4i")
+scale_multiplier = SubResource("Curve_e7rcy")
 scale_multi_scale = 1.0
 r_randomisation_chances = 1.0
 r_speed_choice = PackedFloat32Array()
@@ -86,90 +86,96 @@ r_homing_dur_variation = Vector3(0, 0, 0)
 r_scale_multi_curve_choice = []
 r_scale_multi_iter_variation = Vector3(0, 0, 0)
 r_scale_multi_scale_variation = Vector3(0, 0, 0)
-
-[sub_resource type="Resource" id="Resource_lf7v4"]
-script = ExtResource("2_aw8k1")
-metadata/_custom_type_script = "uid://dwk3r1dm7jxko"
-
-[sub_resource type="PackedDataContainer" id="PackedDataContainer_7umcn"]
-script = ExtResource("3_e7rcy")
-anim_idle = SubResource("Resource_lf7v4")
-damage = 1.0
-speed = 100.0
-scale = 1.0
-angle = 0.0
-groups = PackedStringArray()
-spec_bounces = 0
-spec_no_collision = false
-spec_modulate_loop = 0.0
-spec_trail_length = 0.0
-spec_trail_width = 0.0
-spec_trail_modulate = Color(1, 1, 1, 1)
-spec_rotating_speed = 0.0
-death_after_time = 30.0
-death_outside_box = Rect2(0, 0, 0, 0)
-death_from_collision = true
-a_direction_equation = ""
-a_curve_movement = 0
-a_speed_multiplier = SubResource("Curve_0jxd1")
-a_speed_multi_iterations = 0
-a_speed_multi_scale = 0.0
-trigger_container = ""
-trigger_wait_for_shot = true
-homing_type = 0
-homing_target = NodePath("")
-homing_steer = 0.0
-homing_time_start = 0.0
-homing_duration = 999.0
-scale_multi_iterations = 0
-scale_multiplier = SubResource("Curve_glo4i")
-scale_multi_scale = 1.0
-r_randomisation_chances = 1.0
-r_speed_choice = PackedFloat32Array()
-r_speed_variation = Vector3(0, 0, 0)
-r_scale_choice = PackedFloat32Array()
-r_scale_variation = Vector3(0, 0, 0)
-r_angle_choice = PackedFloat32Array()
-r_angle_variation = Vector3(0, 0, 0)
-r_group_choice = []
-r_bounce_choice = PackedInt32Array()
-r_bounce_variation = Vector3(0, 0, 0)
-r_no_coll_chances = 0.0
-r_modulate_variation = Vector3(0, 0, 0)
-r_trail_length_variation = Vector3(0, 0, 0)
-r_trail_color_variation = Vector3(0, 0, 0)
-r_rotating_variation = Vector3(0, 0, 0)
-r_death_after_choice = PackedFloat32Array()
-r_death_after_variation = Vector3(0, 0, 0)
-r_death_outside_chances = 0.0
-r_dir_equation_choice = PackedStringArray()
-r_curve_choice = []
-r_speed_multi_curve_choice = []
-r_speed_multi_iter_variation = Vector3(0, 0, 0)
-r_speed_multi_scale_variation = Vector3(0, 0, 0)
-r_trigger_choice = PackedStringArray()
-r_wait_for_shot_chances = 0.0
-r_homing_target_choice = []
-r_special_target_choice = PackedStringArray()
-r_group_target_choice = PackedStringArray()
-r_pos_target_choice = PackedVector2Array()
-r_steer_choice = PackedFloat32Array()
-r_steer_variation = Vector3(0, 0, 0)
-r_homing_delay_choice = PackedFloat32Array()
-r_homing_delay_variation = Vector3(0, 0, 0)
-r_homing_dur_choice = PackedFloat32Array()
-r_homing_dur_variation = Vector3(0, 0, 0)
-r_scale_multi_curve_choice = []
-r_scale_multi_iter_variation = Vector3(0, 0, 0)
-r_scale_multi_scale_variation = Vector3(0, 0, 0)
+metadata/_custom_type_script = "uid://5f7wk3urrogu"
 
 [sub_resource type="Curve2D" id="Curve2D_ifvyp"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_rnq2b"]
 resource_name = "PatternOne"
 script = ExtResource("5_f8md3")
-bullet = "bullet_basic"
+bullet = "bullet_fire"
 metadata/_custom_type_script = "uid://c8a1dhkpy7mp3"
+
+[sub_resource type="Curve" id="Curve_0jxd1"]
+
+[sub_resource type="Resource" id="Resource_lf7v4"]
+script = ExtResource("2_aw8k1")
+texture = "Fireball"
+metadata/_custom_type_script = "uid://dwk3r1dm7jxko"
+
+[sub_resource type="Curve" id="Curve_glo4i"]
+
+[sub_resource type="PackedDataContainer" id="PackedDataContainer_7umcn"]
+script = ExtResource("3_e7rcy")
+anim_idle = SubResource("Resource_lf7v4")
+damage = 5.615
+speed = 100.0
+scale = 1.0
+angle = 0.0
+groups = PackedStringArray()
+spec_bounces = 0
+spec_no_collision = false
+spec_modulate_loop = 0.0
+spec_trail_length = 0.0
+spec_trail_width = 0.0
+spec_trail_modulate = Color(1, 1, 1, 1)
+spec_rotating_speed = 60.0
+death_after_time = 30.0
+death_outside_box = Rect2(0, 0, 0, 0)
+death_from_collision = true
+a_direction_equation = ""
+a_curve_movement = 0
+a_speed_multiplier = SubResource("Curve_0jxd1")
+a_speed_multi_iterations = 0
+a_speed_multi_scale = 0.0
+trigger_container = ""
+trigger_wait_for_shot = true
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+scale_multi_iterations = 0
+scale_multiplier = SubResource("Curve_glo4i")
+scale_multi_scale = 1.0
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
 
 [sub_resource type="Curve2D" id="Curve2D_pdcad"]
 _data = {
@@ -196,35 +202,96 @@ script = ExtResource("9_0ibnl")
 bullet = "bullet_basic"
 metadata/_custom_type_script = "uid://bqduve15km3cx"
 
+[sub_resource type="Curve" id="Curve_0ibnl"]
+
+[sub_resource type="Curve" id="Curve_amisj"]
+
+[sub_resource type="PackedDataContainer" id="PackedDataContainer_aw8k1"]
+script = ExtResource("3_e7rcy")
+damage = 1.0
+speed = 20.0
+scale = 1.0
+angle = 0.0
+groups = PackedStringArray()
+spec_bounces = 0
+spec_no_collision = false
+spec_modulate_loop = 0.0
+spec_trail_length = 0.0
+spec_trail_width = 0.0
+spec_trail_modulate = Color(1, 1, 1, 1)
+spec_rotating_speed = 0.0
+death_after_time = 30.0
+death_outside_box = Rect2(0, 0, 0, 0)
+death_from_collision = true
+a_direction_equation = ""
+a_curve_movement = 0
+a_speed_multiplier = SubResource("Curve_0ibnl")
+a_speed_multi_iterations = 0
+a_speed_multi_scale = 0.0
+trigger_container = ""
+trigger_wait_for_shot = true
+homing_type = 3
+homing_group = "enemy"
+homing_select_in_group = 3
+homing_steer = 3.14
+homing_time_start = 0.0
+homing_duration = 999.0
+scale_multi_iterations = 0
+scale_multiplier = SubResource("Curve_amisj")
+scale_multi_scale = 1.0
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+metadata/_custom_type_script = "uid://5f7wk3urrogu"
+
 [node name="ActiveEquipmentLibrary" type="Node" unique_id=1628274122]
 script = ExtResource("1_aw8k1")
-
-[node name="BulletPatterns" type="Node2D" parent="." unique_id=1507782675]
-
-[node name="BulletBasic" type="Path2D" parent="BulletPatterns" unique_id=672131023]
-curve = SubResource("Curve2D_n8hue")
-script = ExtResource("1_amisj")
-id = "bullet_basic"
-props = SubResource("PackedDataContainer_sp0qb")
-metadata/_custom_type_script = "uid://bl57xct8j47m5"
-
-[node name="BulletSplat" type="Path2D" parent="BulletPatterns" unique_id=1874014646]
-curve = SubResource("Curve2D_n8hue")
-script = ExtResource("1_amisj")
-id = "2"
-props = SubResource("PackedDataContainer_sp0qb")
-metadata/_custom_type_script = "uid://bl57xct8j47m5"
-
-[node name="BulletPattern3" type="Path2D" parent="BulletPatterns" unique_id=387426238]
-curve = SubResource("Curve2D_n8hue")
-script = ExtResource("1_amisj")
-id = "3"
-props = SubResource("PackedDataContainer_7umcn")
-metadata/_custom_type_script = "uid://bl57xct8j47m5"
 
 [node name="SpawnPattern" type="Node2D" parent="." unique_id=1736253256]
 
 [node name="BasicBullet" type="Node2D" parent="SpawnPattern" unique_id=680697291]
+
+[node name="BulletBasic" type="Path2D" parent="SpawnPattern/BasicBullet" unique_id=672131023]
+curve = SubResource("Curve2D_n8hue")
+script = ExtResource("1_amisj")
+id = "bullet_basic"
+props = SubResource("PackedDataContainer_q1yy5")
+metadata/_custom_type_script = "uid://bl57xct8j47m5"
 
 [node name="SpawnBasic" type="Path2D" parent="SpawnPattern/BasicBullet" unique_id=1721896369]
 curve = SubResource("Curve2D_ifvyp")
@@ -233,20 +300,59 @@ id = "spawn_basic"
 pattern = SubResource("NavigationPolygon_rnq2b")
 metadata/_custom_type_script = "uid://bhjpxssuqe6ak"
 
-[node name="SpawnCircle" type="Path2D" parent="SpawnPattern/BasicBullet" unique_id=622696560]
+[node name="FireWand" type="Node2D" parent="SpawnPattern" unique_id=1062758862]
+
+[node name="BulletFire" type="Path2D" parent="SpawnPattern/FireWand" unique_id=387426238]
+curve = SubResource("Curve2D_n8hue")
+script = ExtResource("1_amisj")
+id = "bullet_fire"
+props = SubResource("PackedDataContainer_7umcn")
+shared_area = "fire"
+metadata/_custom_type_script = "uid://bl57xct8j47m5"
+
+[node name="SpawnFireWand" type="Path2D" parent="SpawnPattern/FireWand" unique_id=1982601121]
+curve = SubResource("Curve2D_ifvyp")
+script = ExtResource("4_q1yy5")
+id = "spawn_firewand"
+pattern = SubResource("NavigationPolygon_rnq2b")
+metadata/_custom_type_script = "uid://bhjpxssuqe6ak"
+
+[node name="Circle" type="Node2D" parent="SpawnPattern" unique_id=363171017]
+
+[node name="SpawnCircle" type="Path2D" parent="SpawnPattern/Circle" unique_id=622696560]
 curve = SubResource("Curve2D_pdcad")
 script = ExtResource("4_q1yy5")
 id = "spawn_circle"
 pattern = SubResource("NavigationPolygon_jr67e")
 
-[node name="SpawnLine" type="Path2D" parent="SpawnPattern/BasicBullet" unique_id=1625556776]
+[node name="Line" type="Node2D" parent="SpawnPattern" unique_id=1813364025]
+
+[node name="SpawnLine" type="Path2D" parent="SpawnPattern/Line" unique_id=1625556776]
 curve = SubResource("Curve2D_pdcad")
 script = ExtResource("4_q1yy5")
 id = "spawn_line"
 pattern = SubResource("NavigationPolygon_amisj")
 
-[node name="SpawnS" type="Path2D" parent="SpawnPattern/BasicBullet" unique_id=1469747139]
+[node name="S" type="Node2D" parent="SpawnPattern" unique_id=814418497]
+
+[node name="SpawnS" type="Path2D" parent="SpawnPattern/S" unique_id=1469747139]
 curve = SubResource("Curve2D_pdcad")
 script = ExtResource("4_q1yy5")
 id = "spawn_s"
 pattern = SubResource("NavigationPolygon_aw8k1")
+
+[node name="BasicHoming" type="Node2D" parent="SpawnPattern" unique_id=1289839360]
+
+[node name="BulletBasic" type="Path2D" parent="SpawnPattern/BasicHoming" unique_id=259044582]
+curve = SubResource("Curve2D_n8hue")
+script = ExtResource("1_amisj")
+id = "bullet_homing"
+props = SubResource("PackedDataContainer_aw8k1")
+metadata/_custom_type_script = "uid://bl57xct8j47m5"
+
+[node name="SpawnBasic" type="Path2D" parent="SpawnPattern/BasicHoming" unique_id=980922604]
+curve = SubResource("Curve2D_ifvyp")
+script = ExtResource("4_q1yy5")
+id = "spawn_homing"
+pattern = SubResource("NavigationPolygon_rnq2b")
+metadata/_custom_type_script = "uid://bhjpxssuqe6ak"

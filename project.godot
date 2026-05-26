@@ -36,11 +36,14 @@ ScreenTransition="*uid://btae5d3enx63l"
 LogManager="*uid://bbqq4f2t8emm1"
 NetworkManager="*uid://d3iltvab3tx3u"
 ActiveEquipmentLibrary="*uid://d21mp38saokep"
+VisualEffectsManager="*uid://utdxetsrws4d"
 
 [display]
 
-window/size/viewport_width=540
-window/size/viewport_height=960
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/size/window_width_override=540
+window/size/window_height_override=960
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
@@ -58,6 +61,9 @@ enabled=PackedStringArray("res://addons/BulletUpHell/plugin.cfg", "res://addons/
 
 player_camera=""
 players=""
+enemy=""
+foreground_layer=""
+session_manager=""
 
 [gui]
 
@@ -109,6 +115,14 @@ action={
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+
+[layer_names]
+
+2d_physics/layer_9="Basic"
+2d_physics/layer_10="Element_Fire"
+2d_physics/layer_11="Element_Ice"
+2d_physics/layer_12="Element_Earth"
+2d_physics/layer_13="Element_Explosive"
 
 [physics]
 

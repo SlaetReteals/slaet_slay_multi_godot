@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bo7d3cbri1l0m"]
+
+[ext_resource type="Script" uid="uid://dsy5cxdtfl2x1" path="res://ui/hud/floating_text.gd" id="1_il7ph"]
+
+[node name="FloatingText" type="Node2D" unique_id=1739071897]
+script = ExtResource("1_il7ph")
+
+[node name="Label" type="Label" parent="." unique_id=1684251870]
+offset_right = 40.0
+offset_bottom = 17.0
+text = "15"
