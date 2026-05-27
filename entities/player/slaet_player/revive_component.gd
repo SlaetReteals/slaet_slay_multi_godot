@@ -6,8 +6,9 @@ extends Area2D
 @export var player_node: Player
 
 # Sync this variable via Netfox (StateSynchronizer) so clients can draw a progress bar!
-@export var current_progress: float = 0.0 
+@export var current_progress: float = 10.0
 
+@onready var player_sprite: Sprite2D = $"../Visuals/PlayerSprite"
 @onready var tombstone_sprite: Sprite2D = $"../Visuals/TombstoneSprite"
 var _overlapping_saviors: int = 0
 var _is_active: bool = false
@@ -18,18 +19,20 @@ func _ready() -> void:
 	monitoring = false # Tombstone is off by default
 
 func enable_tombstone() -> void:
+	player_sprite.visible = false
 	_is_active = true
 	monitoring = true
 	current_progress = 0.0
 	tombstone_sprite.visible = true
-	
+	LogManager.info('revive', 'Tombstone enabled and monitoring set to TRUE for ' + str(player_node.name))
 func disable_tombstone() -> void:
+	player_sprite.visible = true
 	_is_active = false
 	monitoring = false
 	current_progress = 0.0
 	_overlapping_saviors = 0
 	tombstone_sprite.visible = false
-
+	LogManager.info('revive', 'Tombstone disabled for ' + str(player_node.name))
 func _on_body_entered(body: Node2D) -> void:
 	if not multiplayer.is_server():
 		return

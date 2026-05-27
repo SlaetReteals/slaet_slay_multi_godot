@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://3lbngqcexe0l" path="res://addons/netfox/state-synchronizer.gd" id="5_e4s46"]
 [ext_resource type="Texture2D" uid="uid://bycud45r0rop4" path="res://assets/textures/player/MushIdle.png" id="7_pwqxn"]
 [ext_resource type="Script" uid="uid://dour8fehaaugp" path="res://addons/netfox/tick-interpolator.gd" id="8_pwqxn"]
-[ext_resource type="Texture2D" uid="uid://gc1ykdo0ejdx" path="res://assets/textures/player/player_tombstone.png" id="10_c32i8"]
+[ext_resource type="Texture2D" uid="uid://b5v7lgviiytj3" path="res://assets/textures/player/MushStone.png" id="10_c32i8"]
 [ext_resource type="Script" uid="uid://08xi45h2ysio" path="res://entities/player/slaet_player/active_equipment_component.gd" id="10_js1sq"]
 [ext_resource type="PackedScene" uid="uid://dmegso3kjij1s" path="res://components/health_component.tscn" id="11_aky2q"]
 [ext_resource type="Script" uid="uid://cn5qfcvqbb22d" path="res://entities/player/slaet_player/virtual_joystick_component.gd" id="11_gwlfu"]
@@ -91,6 +91,7 @@ metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
 [node name="StateSynchronizer" type="Node" parent="." unique_id=809166316 node_paths=PackedStringArray("root")]
 script = ExtResource("5_e4s46")
 root = NodePath("..")
+properties = Array[String](["ReviveComponent:current_progress"])
 metadata/_custom_type_script = "uid://3lbngqcexe0l"
 
 [node name="RollbackSynchronizer" type="Node" parent="." unique_id=150066071 node_paths=PackedStringArray("root")]
@@ -109,8 +110,10 @@ position = Vector2(-1, 0)
 scale = Vector2(0.346, 0.37)
 texture = ExtResource("7_pwqxn")
 
-[node name="TombstoneSprite" type="Sprite2D" parent="Visuals" unique_id=787859493]
+[node name="TombstoneSprite" type="Sprite2D" parent="Visuals" unique_id=787859493 groups=["tombstone"]]
 visible = false
+z_index = 50
+scale = Vector2(0.66, 0.66)
 texture = ExtResource("10_c32i8")
 
 [node name="TickInterpolator" type="Node" parent="." unique_id=113452814 node_paths=PackedStringArray("root")]

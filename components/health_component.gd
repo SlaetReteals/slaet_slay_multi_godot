@@ -14,8 +14,11 @@ func _ready() -> void:
 
 # Inject missing deterministic damage interface
 func damage(damage_amount: float) -> void:
-	
 	if not multiplayer.is_server():
+		return
+		
+	# NEW: Ignore damage if already dead
+	if current_health <= 0.0:
 		return
 		
 	var actual_damage: float = max(damage_amount, 0.0)
@@ -42,4 +45,5 @@ func get_health_percent() -> float:
 
 func _check_death() -> void:
 	if current_health <= 0.0:
+		LogManager.info('health', 'Health depleted for ' + str(get_parent().name) + '. Emitting on_health_depleted.')
 		on_health_depleted.emit()

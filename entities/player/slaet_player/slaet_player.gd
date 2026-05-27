@@ -37,7 +37,8 @@ extends CharacterBody2D
 @onready var _is_dead: bool = false
 
 @onready var revive_component: ReviveComponent = $ReviveComponent as ReviveComponent
-@onready var alive_state: CompoundState = $StateChart/Root/Alive # Or whatever your active state is named
+@onready var alive_state: CompoundState = $StateChart/Root/Alive
+@onready var multi_id = str(self.name)
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -63,30 +64,28 @@ func _process(_delta: float) -> void:
 	_update_sprite_direction()
 
 func _on_health_depleted() -> void:
-	if not multiplayer.is_server() or _is_dead:
+	if _is_dead:
 		return
 	state_chart.send_event("dead")
-	print('Player Died ID# '+ str(multiplayer.get_instance_id()))
+	print('Player Died ID# '+ multi_id)
 	
 func _on_death_state_entered() -> void:
-	_is_dead = true
-	_input_vector = Vector2.ZERO
-	_rpc_execute_death_visuals.rpc()
+	LogManager.info('player', 'Death state entered for ' + multi_id + '. is_server: ' + str(multiplayer.is_server()))
 	
-	if multiplayer.is_server():
-		revive_component.enable_tombstone()
-		
-		# Safely find the manager in the current scene
-		var session_manager: Node = get_tree().get_first_node_in_group(&"session_manager")
-		if session_manager != null and session_manager.has_method("check_game_over_condition"):
-			session_manager.check_game_over_condition()
-		
+	# Force EVERYONE (including the server) to update their local death state
+	_rpc_sync_death_state.rpc(true)
+
+	var session_manager: Node = get_tree().get_first_node_in_group(&"session_manager")
+	if session_manager != null and session_manager.has_method("check_game_over_condition"):
+		session_manager.check_game_over_condition()
+
 func _on_alive_state_entered() -> void:
-	_is_dead = false
-	if multiplayer.is_server():
-		revive_component.disable_tombstone()
-				
+	# Force EVERYONE to update their local alive state
+	_rpc_sync_death_state.rpc(false)
 func _poll_local_inputs() -> void:
+	if _is_dead:
+		_input_vector = Vector2.ZERO
+		return
 	var keyboard_input: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	
 	var touch_input: Vector2 = Vector2.ZERO
@@ -171,3 +170,31 @@ func _rpc_execute_death_visuals() -> void:
 #		var anim: AnimationPlayer = get_node("Visuals/AnimationPlayer")
 #		anim.play("death_explode")
 		pass
+@rpc("any_peer", "call_local", "reliable")
+func _rpc_set_tombstone_state(is_enabled: bool) -> void:
+	if is_instance_valid(revive_component):
+		if is_enabled:
+			revive_component.enable_tombstone()
+		else:
+			revive_component.disable_tombstone()
+@rpc("any_peer", "call_local", "reliable")
+func _rpc_sync_death_state(is_dead: bool) -> void:
+	# 1. Force the local client to know its dead/alive status
+	_is_dead = is_dead
+	
+	if is_dead:
+		_input_vector = Vector2.ZERO
+		
+		# Disable physics ghosting locally
+		set_collision_layer_value(1, false)
+		set_collision_mask_value(1, false)
+		
+		if is_instance_valid(revive_component):
+			revive_component.enable_tombstone()
+	else:
+		# Re-enable physics ghosting locally
+		set_collision_layer_value(1, true)
+		set_collision_mask_value(1, true)
+		
+		if is_instance_valid(revive_component):
+			revive_component.disable_tombstone()

@@ -15,6 +15,8 @@ func _ready() -> void:
 		enemy_spawner.add_spawnable_scene(scene.resource_path)
 
 func _tick(_delta: float, tick: int) -> void:
+	if not multiplayer:
+		return
 	if not multiplayer.is_server(): 
 		return
 	if tick >= _next_spawn_tick:

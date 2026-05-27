@@ -4,13 +4,11 @@ extends Node
 @export var player_spawn_container: Node2D
 
 func check_game_over_condition() -> void:
-	if not multiplayer.is_server() or player_spawn_container == null:
-		return
 		
 	var all_dead: bool = true
 	var players: Array[Node] = player_spawn_container.get_children()
-	
-	if players.is_empty():
+	LogManager.info('session manager', 'player '+str(multiplayer.get_unique_id())) 
+	if not players.is_empty():
 		return
 		
 	for node in players:
@@ -21,8 +19,11 @@ func check_game_over_condition() -> void:
 			
 	if all_dead:
 		_execute_game_over()
-
+		
+@rpc('authority','call_local','reliable')
 func _execute_game_over() -> void:
+	if not multiplayer.is_server() or player_spawn_container == null:
+		return
 	# Optional: Delay the scene change so players can see their demise
 	await get_tree().create_timer(2.0).timeout
 	

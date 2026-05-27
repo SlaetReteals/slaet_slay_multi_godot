@@ -64,6 +64,7 @@ players=""
 enemy=""
 foreground_layer=""
 session_manager=""
+tombstone=""
 
 [gui]
 
