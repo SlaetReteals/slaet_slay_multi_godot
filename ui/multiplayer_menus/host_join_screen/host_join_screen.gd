@@ -14,7 +14,7 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_network_peer_disconnected)
 	multiplayer.connected_to_server.connect(_on_connection_success)
 	multiplayer.connection_failed.connect(_on_connection_failed)
-
+	
 func _on_host_pressed() -> void:
 	LogManager.info("on_host_pressed", "Hosting game on port " + str(NetworkManager.PORT) + "...")
 	if NetworkManager.host_game():
@@ -59,7 +59,7 @@ func _on_connection_failed() -> void:
 # --- Helpers ---
 
 func _go_to_lobby() -> void:
-	get_tree().change_scene_to_file("res://levels/00_level_lobby/00_level_template.tscn")
+	get_tree().change_scene_to_file("res://levels/01_level_lobby/01_level_lobby.tscn")
 
 func _on_scan_timeout_timeout() -> void:
 	if server_ip.text == "Scanning...":

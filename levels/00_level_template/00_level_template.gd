@@ -145,3 +145,12 @@ func _create_indicator_for(target_player: Player) -> void:
 	indicator.target_player = target_player
 	
 	local_client_hud.add_child(indicator)
+	
+func _rebuild_players_from_save() -> void:
+	var peers: Array[int] = multiplayer.get_peers()
+	peers.append(multiplayer.get_unique_id()) # Include Host
+	
+	for peer_id in peers:
+		# Ask the SaveManager for the data, then feed it directly into the Spawner
+		var save_data: PlayerSaveData = SaveManager.load_player_data(peer_id)
+		player_spawner.spawn(save_data)

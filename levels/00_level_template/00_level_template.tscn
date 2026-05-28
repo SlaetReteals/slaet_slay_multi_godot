@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://8oxv8wwte2ir"]
 
-[ext_resource type="Script" uid="uid://3hybkrb0sq6n" path="res://levels/00_level_lobby/00_level_template.gd" id="1_daua1"]
+[ext_resource type="Script" uid="uid://3hybkrb0sq6n" path="res://levels/00_level_template/00_level_template.gd" id="1_daua1"]
 [ext_resource type="PackedScene" uid="uid://8nsatcn6jr32" path="res://entities/player/slaet_player/slaet_player.tscn" id="2_p0i6d"]
 [ext_resource type="PackedScene" uid="uid://b3fq0ijabxhkr" path="res://systems/active_equipment_manager/active_equipment_pickup/spawn_active_equipment.tscn" id="3_o1uyc"]
 [ext_resource type="PackedScene" uid="uid://dhudnqypc48r2" path="res://ui/hud/off_screen_indicator.tscn" id="3_p0i6d"]

@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://cjbfm40eb71bl"]
+
+[ext_resource type="Script" uid="uid://l2xev5p6q6tm" path="res://levels/01_level_lobby/01_level_lobby.gd" id="1_dd1tx"]
+[ext_resource type="PackedScene" uid="uid://8nsatcn6jr32" path="res://entities/player/slaet_player/slaet_player.tscn" id="2_5tjfk"]
+[ext_resource type="Script" uid="uid://5qhv1iu2tppf" path="res://systems/session_manager.gd" id="4_4lknb"]
+[ext_resource type="PackedScene" uid="uid://dhudnqypc48r2" path="res://ui/hud/off_screen_indicator.tscn" id="5_fjipl"]
+[ext_resource type="PackedScene" uid="uid://dif2ggd7ov0ig" path="res://systems/player_camera/local_camera_system.tscn" id="6_rdacf"]
+[ext_resource type="Texture2D" uid="uid://dmmsyythqo2i" path="res://assets/textures/ui/Move Joystick Background.png" id="7_5tjfk"]
+
+[sub_resource type="Gradient" id="Gradient_p67l7"]
+offsets = PackedFloat32Array(0, 0.5985401, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.46828187, 0.27318332, 0.002814975, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0w41x"]
+gradient = SubResource("Gradient_p67l7")
+width = 2160
+height = 3840
+fill = 2
+fill_from = Vector2(0.5090218, 0.51282054)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x2fjv"]
+radius = 58.0
+height = 152.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_p67l7"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_o1uyc"]
+vertices = PackedVector2Array(1834.9766, -1913.0313, 1828.0078, 1948.9219, -1851.9219, 1922.0703, -1825.0625, -1906.0703, 2.0390625, -1919.9922)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(2, -1930, 1845, -1923, 1838, 1959, -1862, 1932, -1835, -1916)])
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6sknn"]
+radius = 52.46904
+
+[node name="01LevelLobby" type="Node2D" unique_id=462889802]
+script = ExtResource("1_dd1tx")
+player_scene = ExtResource("2_5tjfk")
+
+[node name="SessionManager" type="Node" parent="." unique_id=1062260702 node_paths=PackedStringArray("player_spawn_container") groups=["session_manager"]]
+script = ExtResource("4_4lknb")
+player_spawn_container = NodePath("..")
+
+[node name="LocalClientHUD" type="CanvasLayer" parent="." unique_id=2139773765 groups=["foreground_layer"]]
+
+[node name="OffScreenIndicator" parent="LocalClientHUD" unique_id=1955977937 instance=ExtResource("5_fjipl")]
+
+[node name="SpawnLocations" type="Node2D" parent="." unique_id=221263325]
+
+[node name="ClientSpawn" type="Marker2D" parent="SpawnLocations" unique_id=498859325]
+position = Vector2(500, 0)
+
+[node name="HostSpawn" type="Marker2D" parent="SpawnLocations" unique_id=1198802280]
+position = Vector2(-500, 0)
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=761377485]
+_spawnable_scenes = PackedStringArray("uid://8nsatcn6jr32")
+spawn_path = NodePath(".")
+
+[node name="EquipmentSpawner" type="MultiplayerSpawner" parent="." unique_id=2099422037]
+spawn_path = NodePath(".")
+
+[node name="LocalCameraSystem" parent="." unique_id=1673122289 instance=ExtResource("6_rdacf")]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=677159773]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1288851931]
+
+[node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1488125169]
+position = Vector2(3.0000916, 0)
+scale = Vector2(1.6944445, 1)
+texture = SubResource("GradientTexture2D_0w41x")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1443670912]
+
+[node name="Barrel" type="CollisionShape2D" parent="StaticBody2D" unique_id=1305474762]
+position = Vector2(-126, 525)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="Barrel2" type="CollisionShape2D" parent="StaticBody2D" unique_id=1475478123]
+position = Vector2(-474, 316)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="Barrel3" type="CollisionShape2D" parent="StaticBody2D" unique_id=1234185673]
+position = Vector2(-445, -149)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="Barrel4" type="CollisionShape2D" parent="StaticBody2D" unique_id=1424046641]
+position = Vector2(-178, -484)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="Barrel5" type="CollisionShape2D" parent="StaticBody2D" unique_id=1541706726]
+position = Vector2(112, -703)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="Barrel6" type="CollisionShape2D" parent="StaticBody2D" unique_id=1117338632]
+position = Vector2(430, -757)
+shape = SubResource("CapsuleShape2D_x2fjv")
+
+[node name="WorldBoundaryNorth" type="CollisionShape2D" parent="StaticBody2D" unique_id=2079304246]
+position = Vector2(0, -1920)
+rotation = 3.1415927
+shape = SubResource("WorldBoundaryShape2D_p67l7")
+
+[node name="WorldBoundaryEast" type="CollisionShape2D" parent="StaticBody2D" unique_id=1962090765]
+position = Vector2(1832, 0)
+rotation = -1.5707964
+shape = SubResource("WorldBoundaryShape2D_p67l7")
+
+[node name="WorldBoundarySouth" type="CollisionShape2D" parent="StaticBody2D" unique_id=879124384]
+position = Vector2(0, 1920)
+shape = SubResource("WorldBoundaryShape2D_p67l7")
+
+[node name="WorldBoundaryWest" type="CollisionShape2D" parent="StaticBody2D" unique_id=1271682238]
+position = Vector2(-1832, 0)
+rotation = 1.5707964
+shape = SubResource("WorldBoundaryShape2D_p67l7")
+
+[node name="BulletPatterns" type="Node2D" parent="." unique_id=1253729188]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=950979034]
+visible = false
+navigation_polygon = SubResource("NavigationPolygon_o1uyc")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="NavigationRegion2D" unique_id=472451433]
+
+[node name="SpawnLevelTemplate" type="Area2D" parent="." unique_id=1242324125]
+collision_mask = 2
+
+[node name="LevelTemplate" type="CollisionShape2D" parent="SpawnLevelTemplate" unique_id=922729727]
+position = Vector2(272, 272)
+shape = SubResource("CircleShape2D_6sknn")
+
+[node name="Sprite2D" type="Sprite2D" parent="SpawnLevelTemplate" unique_id=1692173131]
+position = Vector2(272, 272)
+scale = Vector2(0.26, 0.26)
+texture = ExtResource("7_5tjfk")

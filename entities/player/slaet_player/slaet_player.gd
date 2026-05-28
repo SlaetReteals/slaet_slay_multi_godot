@@ -67,7 +67,7 @@ func _on_health_depleted() -> void:
 	if _is_dead:
 		return
 	state_chart.send_event("dead")
-	print('Player Died ID# '+ multi_id)
+	print('Player Died ID# '+ multi_id) 
 	
 func _on_death_state_entered() -> void:
 	LogManager.info('player', 'Death state entered for ' + multi_id + '. is_server: ' + str(multiplayer.is_server()))
