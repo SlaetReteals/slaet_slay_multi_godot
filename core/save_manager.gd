@@ -60,3 +60,4 @@ func save_all_active_players(players_array: Array[Node]) -> void:
 		# Example: data.current_health = player.health_component.current_health
 		
 		save_player_data(peer_id, data)
+		LogManager.info('save manager', str(data.peer_id) + ' saved data')

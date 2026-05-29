@@ -1,7 +1,7 @@
 extends Node
 
 # Reference to the node where your MultiplayerSpawner drops players
-@export var player_spawn_container: Node2D
+@export var player_spawn_container: Node
 
 func check_game_over_condition() -> void:
 		

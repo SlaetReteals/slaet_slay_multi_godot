@@ -23,9 +23,20 @@ script = ExtResource("1_daua1")
 player_scene = ExtResource("2_p0i6d")
 spawn_static_active_equipment = ExtResource("3_o1uyc")
 
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=761377485]
+_spawnable_scenes = PackedStringArray("uid://8nsatcn6jr32")
+spawn_path = NodePath("../PlayerContainer")
+
+[node name="EquipmentSpawner" type="MultiplayerSpawner" parent="." unique_id=2099422037]
+spawn_path = NodePath("../EquipmentContainer")
+
+[node name="PlayerContainer" type="Node" parent="." unique_id=1421035794]
+
+[node name="EquipmentContainer" type="Node" parent="." unique_id=930759693]
+
 [node name="SessionManager" type="Node" parent="." unique_id=1062260702 node_paths=PackedStringArray("player_spawn_container") groups=["session_manager"]]
 script = ExtResource("4_wmkr8")
-player_spawn_container = NodePath("..")
+player_spawn_container = NodePath("../PlayerContainer")
 
 [node name="LocalClientHUD" type="CanvasLayer" parent="." unique_id=2139773765 groups=["foreground_layer"]]
 
@@ -38,13 +49,6 @@ position = Vector2(500, 0)
 
 [node name="HostSpawn" type="Marker2D" parent="SpawnLocations" unique_id=1198802280]
 position = Vector2(-500, 0)
-
-[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=761377485]
-_spawnable_scenes = PackedStringArray("uid://8nsatcn6jr32")
-spawn_path = NodePath("..")
-
-[node name="EquipmentSpawner" type="MultiplayerSpawner" parent="." unique_id=2099422037]
-spawn_path = NodePath(".")
 
 [node name="LocalCameraSystem" parent="." unique_id=1673122289 instance=ExtResource("3_x2fjv")]
 

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="SlaetSlayerMulti"
-run/main_scene="uid://b4byqrc56cx67"
+run/main_scene="uid://qeqaiway2xd0"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="uid://c4hvcjghlbmog"
 

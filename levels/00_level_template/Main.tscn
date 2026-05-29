@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://qeqaiway2xd0"]
+
+[ext_resource type="Script" uid="uid://cdmsjapvg1toq" path="res://levels/00_level_template/main.gd" id="1_is4pq"]
+[ext_resource type="PackedScene" uid="uid://b4byqrc56cx67" path="res://ui/multiplayer_menus/host_join_screen/host_join_screen.tscn" id="2_sbmwi"]
+
+[node name="Main" type="Node" unique_id=1490983143]
+script = ExtResource("1_is4pq")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1304516371]
+_spawnable_scenes = PackedStringArray("uid://8oxv8wwte2ir", "uid://cjbfm40eb71bl", "uid://b4byqrc56cx67")
+spawn_path = NodePath("../LevelContainer")
+
+[node name="LevelContainer" type="Node" parent="." unique_id=1600808008]
+
+[node name="HostJoinScreen" parent="LevelContainer" unique_id=-433460157 instance=ExtResource("2_sbmwi")]

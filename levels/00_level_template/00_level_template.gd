@@ -8,7 +8,7 @@ extends Node2D
 @onready var active_equipment_spawner: MultiplayerSpawner = $EquipmentSpawner
 @onready var spawn_locations: Node2D = $SpawnLocations
 @onready var local_client_hud: CanvasLayer = $LocalClientHUD
-
+@onready var context: String = self.name
 const INDICATOR_SCENE: PackedScene = preload("res://ui/hud/off_screen_indicator.tscn") 
 
 var _available_spawn_points: Array[Node] = []
@@ -16,23 +16,11 @@ var _player_spawn_map: Dictionary = {}
 var _has_local_player: bool = false
 
 func _ready() -> void:
-	active_equipment_spawner.spawn_function = _spawn_active_equipment
-	if player_scene == null:
-		LogManager.error(_level_name, "Player scene is not assigned!")
-		return
-	if spawn_static_active_equipment == null:
-		LogManager.error(_level_name, "Weapon pickup scene is not assigned!")
-		return
-	
 	# 1. Custom spawn mapping for players
 	player_spawner.spawn_function = _custom_spawn
 	
 	# 2. Listen for ANY player being spawned by the server
 	player_spawner.spawned.connect(_on_player_spawned)
-	
-	if multiplayer.multiplayer_peer == null or multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
-		LogManager.error(_level_name, "No network peer found!")
-		return
 		
 	if multiplayer.is_server():
 		_available_spawn_points = spawn_locations.get_children()
@@ -40,14 +28,12 @@ func _ready() -> void:
 		
 		multiplayer.peer_connected.connect(_on_peer_connected)
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-		_spawn_player(multiplayer.get_unique_id())
-		
+		call_deferred("_spawn_player",multiplayer.get_unique_id())
+		LogManager.info(context,"spawning")
 		# NEW: Spawn the initial level loot
 		# We use call_deferred to ensure the scene tree is fully ready before spawning
-		call_deferred("_spawn_static_level_active_equipment","res://entities/active_equipment/default.tres")
+		#call_deferred("_spawn_static_level_active_equipment","res://entities/active_equipment/default.tres")
 		
-		#4
-# --- NEW: LOOT SPAWNING LOGIC (Server Only) ---
 func _spawn_active_equipment(data: Variant) -> Node:
 	# 1. Instantiate the scene locally
 	var spawn_active_equipment: SpawnActiveEquipment = spawn_static_active_equipment.instantiate() as SpawnActiveEquipment
@@ -146,11 +132,11 @@ func _create_indicator_for(target_player: Player) -> void:
 	
 	local_client_hud.add_child(indicator)
 	
-func _rebuild_players_from_save() -> void:
-	var peers: Array[int] = multiplayer.get_peers()
-	peers.append(multiplayer.get_unique_id()) # Include Host
-	
-	for peer_id in peers:
-		# Ask the SaveManager for the data, then feed it directly into the Spawner
-		var save_data: PlayerSaveData = SaveManager.load_player_data(peer_id)
-		player_spawner.spawn(save_data)
+#func _rebuild_players_from_save() -> void:
+	#var peers: Array[int] = multiplayer.get_peers()
+	#peers.append(multiplayer.get_unique_id()) # Include Host
+	#
+	#for peer_id in peers:
+		## Ask the SaveManager for the data, then feed it directly into the Spawner
+		#var save_data: PlayerSaveData = SaveManager.load_player_data(peer_id)
+		#player_spawner.spawn(save_data)

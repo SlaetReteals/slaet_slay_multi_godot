@@ -17,6 +17,7 @@ var _player_spawn_map: Dictionary = {}
 var _has_local_player: bool = false
 
 func _ready() -> void:
+	
 #	active_equipment_spawner.spawn_function = _spawn_active_equipment
 	if player_scene == null:
 		LogManager.error(_level_name, "Player scene is not assigned!")
@@ -92,13 +93,9 @@ func _on_peer_disconnected(id: int) -> void:
 
 func _on_area_level_template_entered(_body):
 	print("area entered")
-	call_deferred("_change_level")
-
-func _change_level():
-	print('changing level')
-	_trigger_global_scene_change("res://levels/00_level_template/00_level_template.tscn")
-
-
+	var main_node: Main = get_tree().root.get_node("Main") 
+	if main_node:
+		main_node.change_level("res://levels/00_level_template/00_level_template.tscn")
 
 func _spawn_player(id: int) -> void:
 	var target_pos: Vector2 = Vector2.ZERO
@@ -158,30 +155,3 @@ func _create_indicator_for(target_player: Player) -> void:
 	indicator.target_player = target_player
 	
 	local_client_hud.add_child(indicator)
-	
-	
-func _trigger_global_scene_change(scene_path: String) -> void:
-	if not multiplayer.is_server():
-		return
-	
-	# Grab all players and pass them to your new manager
-	var all_players: Array[Node] = get_tree().get_nodes_in_group("players")
-	SaveManager.save_all_active_players(all_players)
-	
-	_rpc_execute_scene_transition.rpc(scene_path)
-@rpc("authority", "call_local", "reliable")
-func _rpc_execute_scene_transition(scene_path: String) -> void:
-	# Nullify spawner callbacks
-	player_spawner.spawn_function = Callable()
-#	active_equipment_spawner.spawn_function = Callable()
-	if not multiplayer.is_server():
-		return
-	# NEW: Manually delete all spawned children BEFORE the tree unloads
-	for child in player_spawner.get_node(player_spawner.spawn_path).get_children():
-		child.queue_free()
-		
-#	for child in active_equipment_spawner.get_node(active_equipment_spawner.spawn_path).get_children():
-#		child.queue_free()
-	
-	# Now it is safe to transition
-	get_tree().change_scene_to_file.call_deferred(scene_path)

@@ -15,13 +15,27 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(_on_connection_success)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	
+# ... inside your host_join_screen.gd ...
+
 func _on_host_pressed() -> void:
 	LogManager.info("on_host_pressed", "Hosting game on port " + str(NetworkManager.PORT) + "...")
 	if NetworkManager.host_game():
 		LogManager.info("on_host_pressed", "Host successful. Local Peer ID: " + str(multiplayer.get_unique_id()))
-		_go_to_lobby()
+		
+		# We are the server, so we load the lobby.
+		# Ensure you have a way to reference the Main node instance here.
+		# Example using SceneTree:
+		var main_node: Main = get_tree().root.get_node("Main") 
+		if main_node:
+			main_node.change_level("res://levels/01_level_lobby/01_level_lobby.tscn")
 	else:
 		LogManager.error("on_host_pressed", "Host failed! Check port.")
+
+func _on_connection_success() -> void:
+	LogManager.info("HOSTJOINSCREEN", "Successfully connected to the server!")
+	# DO NOTHING ELSE HERE! 
+	# Godot's MultiplayerSpawner will automatically spawn the lobby 
+	# into the client's LevelContainer.
 
 func _on_scan_pressed() -> void:
 	LogManager.info("on_scan_pressed", "Scanning local network...")
@@ -49,17 +63,14 @@ func _on_network_peer_connected(id: int) -> void:
 func _on_network_peer_disconnected(id: int) -> void:
 	LogManager.info("HOSTJOINSCREEN", "Peer disconnected: " + str(id))
 
-func _on_connection_success() -> void:
-	LogManager.info("HOSTJOINSCREEN", "Successfully connected to the server!")
-	_go_to_lobby()
+#func _on_connection_success() -> void:
+	#LogManager.info("HOSTJOINSCREEN", "Successfully connected to the server!")
+	#_go_to_lobby()
 
 func _on_connection_failed() -> void:
 	LogManager.info("HOSTJOINSCREEN", "Connection failed.")
 
 # --- Helpers ---
-
-func _go_to_lobby() -> void:
-	get_tree().change_scene_to_file("res://levels/01_level_lobby/01_level_lobby.tscn")
 
 func _on_scan_timeout_timeout() -> void:
 	if server_ip.text == "Scanning...":
