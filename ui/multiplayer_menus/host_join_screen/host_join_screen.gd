@@ -51,9 +51,23 @@ func _on_server_discovered(ip: String) -> void:
 	server_ip.pressed.connect(_on_join_server_pressed.bind(ip))
 
 func _on_join_server_pressed(ip: String) -> void:
-	LogManager.info("on_join_server_pressed","Joining " + ip + "...")
-	NetworkManager.stop_scanning() # Stop polling UDP now that we chose a target
+	LogManager.info("NetworkRequest", "Initiating handshake with %s..." % ip)
+	NetworkManager.stop_scanning()
+	
+	# Disable UI interaction during polling to prevent duplicate requests
+	lock_interface(true) 
+	
 	NetworkManager.join_game(ip)
+	
+	# Yield thread execution until NetworkManager broadcasts resolution
+	var status: Error = await NetworkManager.connection_resolved
+	
+	if status == OK:
+		LogManager.info("NetworkRequest", "Peer established. Teardown authorized.")
+		call_deferred("queue_free")
+	else:
+		LogManager.error("NetworkRequest", "Handshake failed. Restoring interface.")
+		lock_interface(false)
 
 # --- Network Logging Callbacks ---
 
@@ -69,7 +83,6 @@ func _on_network_peer_disconnected(id: int) -> void:
 
 func _on_connection_failed() -> void:
 	LogManager.info("HOSTJOINSCREEN", "Connection failed.")
-
 # --- Helpers ---
 
 func _on_scan_timeout_timeout() -> void:
@@ -80,3 +93,7 @@ func _on_scan_timeout_timeout() -> void:
 	else:
 		LogManager.info("scan_timeout","Server Found: " + str(server_ip.text))
 		NetworkManager.stop_scanning()
+func lock_interface(is_locked: bool) -> void:
+	# Method A: Direct explicit node manipulation (Recommended)
+	if has_node("JoinButton"):
+		$JoinButton.disabled = is_locked

@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_d7rk2")
 pattern_id = "spawn_firewand"
-fire_rate_ticks = 60
+fire_rate_ticks = 30
 shared_area = "firewand"
 metadata/_custom_type_script = "uid://bl531kois1qnr"

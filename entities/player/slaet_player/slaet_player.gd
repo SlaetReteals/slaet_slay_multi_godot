@@ -17,7 +17,7 @@ extends CharacterBody2D
 
 # --- Node References ---
 @onready var sprite: Sprite2D = $Visuals/PlayerSprite as Sprite2D
-
+@onready var state_sync: StateSynchronizer = $StateSynchronizer as StateSynchronizer
 @onready var rollback_sync: RollbackSynchronizer = $RollbackSynchronizer as RollbackSynchronizer
 @onready var joystick: VirtualJoystickComponent = $UI/VirtualJoystickComponent as VirtualJoystickComponent
 
@@ -43,6 +43,15 @@ extends CharacterBody2D
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 func _ready() -> void:
+	# Disable Netfox processing immediately upon spawn
+	state_sync.set_process(false)
+	state_sync.set_physics_process(false)
+	rollback_sync.set_process(false)
+	rollback_sync.set_physics_process(false)
+	
+	if multiplayer.is_server():
+		# Start a short timer, or ideally wait for a "Client Loaded" RPC
+		_wait_for_clients_to_load()
 	if is_multiplayer_authority():
 		call_deferred("_claim_local_camera", self)
 	if multiplayer.is_server():
@@ -198,3 +207,19 @@ func _rpc_sync_death_state(is_dead: bool) -> void:
 		
 		if is_instance_valid(revive_component):
 			revive_component.disable_tombstone()
+# Runs only on the server, called from _ready()
+func _wait_for_clients_to_load() -> void:
+	# Wait for 3 to 5 physics frames. 
+	# This gives the MultiplayerSpawner a tiny buffer to finish replicating the node.
+	for i in range(5):
+		await get_tree().physics_frame
+	
+	# The node now exists on the clients. 
+	# It is safe to turn the Server's Netfox synchronizers back on.
+	if state_sync:
+		state_sync.set_process(true)
+		state_sync.set_physics_process(true)
+		
+	if rollback_sync:
+		rollback_sync.set_process(true)
+		rollback_sync.set_physics_process(true)

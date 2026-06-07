@@ -15,10 +15,20 @@ func change_level(scene_path: String) -> void:
 		
 	# 1. Clean up existing level
 	for child in level_container.get_children():
-		child.queue_free()
-	
-	call_deferred("spawn_level",scene_path)
+		var sync_node: Node = child.get_node_or_null("StateSynchronizer")
 		
+		if is_instance_valid(sync_node):
+			# Deregister using the synchronizer as the configuration context
+			get_tree().get_multiplayer().object_configuration_remove(child, sync_node)
+			
+			# Halt orphan tick evaluation
+			sync_node.set_process(false)
+			sync_node.set_physics_process(false)
+			
+		child.queue_free()
+
+	await get_tree().process_frame
+	spawn_level(scene_path)
 		# The MultiplayerSpawner will automatically replicate this 
 		# level_instance to all connected clients.
 func spawn_level(scene_path):

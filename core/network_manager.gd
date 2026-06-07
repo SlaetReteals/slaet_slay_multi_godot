@@ -1,7 +1,7 @@
 extends Node
 
 const PORT: int = 8765
-const MAX_PLAYERS: int = 2
+const MAX_PLAYERS: int = 10
 const BROADCAST_PORT: int = 8766
 const DISCOVER_MSG: String = "DISCOVER"
 const REPLY_MSG: String = "SERVER_HERE"
@@ -10,6 +10,7 @@ signal player_connected(peer_id: int)
 signal player_disconnected(peer_id: int)
 signal server_disconnected()
 signal server_discovered(ip: String) 
+signal connection_resolved(status: Error)
 
 var _udp_server: UDPServer
 var _udp_client: PacketPeerUDP
@@ -19,6 +20,8 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	multiplayer.connected_to_server.connect(_on_connection_success)
+	multiplayer.connection_failed.connect(_on_connection_failure)
 	set_process(false) 
 
 func host_game() -> bool:
@@ -110,3 +113,9 @@ func _on_peer_disconnected(id: int) -> void:
 
 func _on_server_disconnected() -> void:
 	server_disconnected.emit()
+
+func _on_connection_success() -> void:
+	connection_resolved.emit(OK)
+
+func _on_connection_failure() -> void:
+	connection_resolved.emit(ERR_CANT_CONNECT)

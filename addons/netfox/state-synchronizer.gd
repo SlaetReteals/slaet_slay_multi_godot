@@ -236,7 +236,10 @@ func _submit_full_state(data: Array, tick: int) -> void:
 func _submit_diff_state(data: PackedByteArray, tick: int, reference_tick: int) -> void:
 	if not _is_initialized: return
 
+	if multiplayer == null:
+		return
 	var sender = multiplayer.get_remote_sender_id()
+	
 	var diff_snapshot := _diff_state_encoder.decode(data, _property_config.get_properties_owned_by(sender))
 	if not _diff_state_encoder.apply(tick, diff_snapshot, reference_tick, sender):
 		# Invalid data
@@ -249,6 +252,8 @@ func _submit_diff_state(data: PackedByteArray, tick: int, reference_tick: int) -
 
 @rpc("any_peer", "reliable", "call_remote")
 func _ack_full_state(tick: int) -> void:
+	if multiplayer == null:
+		return
 	var sender_id := multiplayer.get_remote_sender_id()
 	_ackd_state[sender_id] = tick
 

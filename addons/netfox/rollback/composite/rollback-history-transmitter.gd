@@ -207,7 +207,8 @@ func _submit_input(tick: int, data: Array) -> void:
 	if not _is_initialized:
 		# Settings not processed yet
 		return
-
+	if multiplayer == null:
+		return 
 	var sender := multiplayer.get_remote_sender_id()
 	var snapshots := _input_encoder.decode(data, _input_property_config.get_properties_owned_by(sender))
 	var earliest_received_input = _input_encoder.apply(tick, snapshots, sender)
@@ -221,7 +222,8 @@ func _submit_full_state(data: Array, tick: int) -> void:
 	if not _is_initialized:
 		# Settings not processed yet
 		return
-
+	if multiplayer == null:
+		return
 	var sender := multiplayer.get_remote_sender_id()
 	var snapshot := _full_state_encoder.decode(data, _state_property_config.get_properties_owned_by(sender))
 	if not _full_state_encoder.apply(tick, snapshot, sender):
@@ -238,7 +240,8 @@ func _submit_diff_state(data: PackedByteArray, tick: int, reference_tick: int) -
 	if not _is_initialized:
 		# Settings not processed yet
 		return
-
+	if multiplayer == null:
+		return
 	var sender = multiplayer.get_remote_sender_id()
 	var diff_snapshot := _diff_state_encoder.decode(data, _state_property_config.get_properties_owned_by(sender))
 	if not _diff_state_encoder.apply(tick, diff_snapshot, reference_tick, sender):

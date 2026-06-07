@@ -5,4 +5,5 @@
 [resource]
 script = ExtResource("1_7o6b3")
 pattern_id = "spawn_basic"
+fire_rate_ticks = 60
 metadata/_custom_type_script = "uid://bl531kois1qnr"

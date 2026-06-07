@@ -8,16 +8,24 @@ func check_game_over_condition() -> void:
 	var all_dead: bool = true
 	var players: Array[Node] = player_spawn_container.get_children()
 	LogManager.info('session manager', 'player '+str(multiplayer.get_unique_id())) 
-	if not players.is_empty():
-		return
+	#if not players.is_empty():
+		#LogManager.info('session manager', 'not players.is_empty') 
+#
+		#return
 		
 	for node in players:
+		LogManager.info('session manager', 'node in players') 
+
+		print(node.name)
+		print(node._is_dead)
 		var player: Player = node as Player
 		if player != null and not player._is_dead:
 			all_dead = false
 			break # At least one player is still alive
 			
 	if all_dead:
+		LogManager.info('session manager', 'all_dead') 
+
 		_execute_game_over()
 		
 @rpc('authority','call_local','reliable')
@@ -28,4 +36,7 @@ func _execute_game_over() -> void:
 	await get_tree().create_timer(2.0).timeout
 	
 	# Server changes the scene, Netfox/MultiplayerAPI will sync this to clients automatically
-	get_tree().change_scene_to_file("res://ui/multiplayer_menus/host_join_screen/host_join_screen.tscn")
+	var main_node: Main = get_tree().root.get_node("Main") 
+	if main_node:
+		main_node.change_level("res://levels/01_level_lobby/01_level_lobby.tscn")
+	#get_tree().change_scene_to_file("res://ui/multiplayer_menus/host_join_screen/host_join_screen.tscn")

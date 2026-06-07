@@ -35,7 +35,7 @@ height = 116.0
 physics_interpolation_mode = 2
 collision_layer = 2
 script = ExtResource("1_uabqr")
-speed = 300.0
+speed = 3000.0
 tombstone_sprite = NodePath("Visuals/TombstoneSprite")
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1184941232 node_paths=PackedStringArray("player_health_component")]
@@ -89,12 +89,14 @@ delay_in_seconds = "0.0"
 metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
 
 [node name="StateSynchronizer" type="Node" parent="." unique_id=809166316 node_paths=PackedStringArray("root")]
+process_mode = 4
 script = ExtResource("5_e4s46")
 root = NodePath("..")
 properties = Array[String](["ReviveComponent:current_progress"])
 metadata/_custom_type_script = "uid://3lbngqcexe0l"
 
 [node name="RollbackSynchronizer" type="Node" parent="." unique_id=150066071 node_paths=PackedStringArray("root")]
+process_mode = 4
 script = ExtResource("1_udjpn")
 root = NodePath("..")
 enable_prediction = true

@@ -18,7 +18,7 @@ var _has_local_player: bool = false
 func _ready() -> void:
 	# 1. Custom spawn mapping for players
 	player_spawner.spawn_function = _custom_spawn
-	
+	player_spawner.spawned.connect(_on_client_player_spawned)
 	# 2. Listen for ANY player being spawned by the server
 	player_spawner.spawned.connect(_on_player_spawned)
 		
@@ -28,6 +28,8 @@ func _ready() -> void:
 		
 		multiplayer.peer_connected.connect(_on_peer_connected)
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+		for player_id in multiplayer.get_peers():
+			call_deferred("_spawn_player",player_id)
 		call_deferred("_spawn_player",multiplayer.get_unique_id())
 		LogManager.info(context,"spawning")
 		# NEW: Spawn the initial level loot
@@ -106,6 +108,10 @@ func _on_player_spawned(spawned_node: Node) -> void:
 	var player_node: Player = spawned_node as Player
 	if player_node == null:
 		return
+	if spawned_node.has_node("StateSynchronizer"):
+		var sync_node: StateSynchronizer = spawned_node.get_node("StateSynchronizer") as StateSynchronizer
+		sync_node.set_process(true)
+		sync_node.set_physics_process(true)
 		
 	if player_node.get_multiplayer_authority() == multiplayer.get_unique_id():
 		# It's me!
@@ -140,3 +146,15 @@ func _create_indicator_for(target_player: Player) -> void:
 		## Ask the SaveManager for the data, then feed it directly into the Spawner
 		#var save_data: PlayerSaveData = SaveManager.load_player_data(peer_id)
 		#player_spawner.spawn(save_data)
+func _on_client_player_spawned(spawned_node: Node) -> void:
+	# Now we are 100% certain the node exists on the client.
+	# It is finally safe to activate Netfox locally.
+	var state_sync: StateSynchronizer = spawned_node.get_node_or_null("StateSynchronizer")
+	if state_sync:
+		state_sync.set_process(true)
+		state_sync.set_physics_process(true)
+		
+	var rollback_sync: RollbackSynchronizer = spawned_node.get_node_or_null("RollbackSynchronizer")
+	if rollback_sync:
+		rollback_sync.set_process(true)
+		rollback_sync.set_physics_process(true)
