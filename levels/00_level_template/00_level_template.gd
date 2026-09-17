@@ -11,9 +11,6 @@ extends Node2D
 @onready var local_client_hud: CanvasLayer = $LocalClientHUD
 @onready var context: String = self.name
 
-@onready var equipment_component: ActiveEquipmentComponent = $ActiveEquipmentComponent as ActiveEquipmentComponent
-@onready var default_weapon_path: String = "res://entities/active_equipment/default.tres"
-
 
 const INDICATOR_SCENE: PackedScene = preload("res://ui/hud/off_screen_indicator.tscn") 
 
@@ -114,7 +111,6 @@ func _on_player_spawned(spawned_node: Node) -> void:
 	var player_node: Player = spawned_node as Player
 	if player_node == null:
 		return
-	print(spawned_node.get_property_list())
 	if spawned_node.has_node("StateSynchronizer"):
 		var sync_node: StateSynchronizer = spawned_node.get_node("StateSynchronizer") as StateSynchronizer
 		sync_node.set_process(true)

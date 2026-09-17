@@ -27,7 +27,6 @@ NetworkTimeSynchronizer="*uid://5rmn2ik3kjo8"
 NetworkRollback="*uid://gas743comroj"
 NetworkEvents="*uid://bdmobxxptryj0"
 NetworkPerformance="*uid://cqgf7aqmjfoa3"
-Spawning="*uid://gixop20d1d75"
 SaveManager="*uid://c427wkqmvq21f"
 ClassManager="*uid://bn0su0ijgiugj"
 GameEvents="*uid://cw6amrttts8kb"
@@ -35,13 +34,12 @@ MetaProgression="*uid://dhloe2yhcfmpd"
 ScreenTransition="*uid://btae5d3enx63l"
 LogManager="*uid://bbqq4f2t8emm1"
 NetworkManager="*uid://d3iltvab3tx3u"
-ActiveEquipmentLibrary="*uid://d21mp38saokep"
 VisualEffectsManager="*uid://utdxetsrws4d"
 
 [display]
 
-window/size/viewport_width=1080
-window/size/viewport_height=1920
+window/size/viewport_width=540
+window/size/viewport_height=960
 window/size/window_width_override=540
 window/size/window_height_override=960
 window/stretch/mode="canvas_items"
@@ -55,7 +53,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/BulletUpHell/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/netfox.internals/plugin.cfg", "res://addons/netfox/plugin.cfg", "res://addons/phantom_camera/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg", "res://addons/netfox.internals/plugin.cfg", "res://addons/netfox/plugin.cfg", "res://addons/phantom_camera/plugin.cfg")
 
 [global_group]
 

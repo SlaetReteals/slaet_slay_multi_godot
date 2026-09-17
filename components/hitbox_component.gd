@@ -7,7 +7,7 @@ func _ready() -> void:
 		area_entered.connect(_on_area_entered)
 
 func _on_area_entered(area: Area2D) -> void:
-	# Duck-type validation: Interrogate the physics node for BuH metadata
+	# Duck-type validation: Interrogate the physics node for projectile metadata
 	if "props" in area and area.props is Dictionary:
 		var bullet_id: String = area.props.get("__ID__", "")
 		_resolve_bullet_payload(bullet_id, area)
@@ -17,7 +17,7 @@ func _resolve_bullet_payload(bullet_id: String, bullet_node: Area2D) -> void:
 	var base_damage: float = 10.0
 	var element: String = "physical"
 	
-	# Execute discrete routing based on the BuH serialization ID
+	# Execute discrete routing based on the projectile ID
 	match bullet_id:
 		"bullet_fire":
 			base_damage = 15.0

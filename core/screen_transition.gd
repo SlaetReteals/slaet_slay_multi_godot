@@ -54,15 +54,17 @@ func _execute_fade_out_transition() -> void:
 	fade_layer.add_child(top_lid)
 	fade_layer.add_child(bot_lid)
 	
-	_animate_shut(top_lid, bot_lid, half_y)
+	_animate_shut(top_lid, bot_lid, half_y, fade_layer)
 
 # Handles the closing animation
-func _animate_shut(top: ColorRect, bot: ColorRect, half_y: float) -> void:
+func _animate_shut(top: ColorRect, bot: ColorRect, half_y: float, transition_layer: CanvasLayer = null) -> void:
 	# EASE_IN makes it start slow and accelerate into a violent slam
 	var tween: Tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
 	
 	tween.tween_property(top, "position:y", 0.0, 0.4)
 	tween.parallel().tween_property(bot, "position:y", half_y, 0.4)
+	if transition_layer:
+		tween.tween_callback(transition_layer.queue_free)
 
 # Helper component to construct the ColorRects
 func _create_eyelid(width: float, height: float, y_pos: float) -> ColorRect:

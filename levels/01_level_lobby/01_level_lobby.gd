@@ -43,18 +43,17 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		_available_spawn_points = spawn_locations.get_children()
 		_available_spawn_points.shuffle()
+		
 		multiplayer.peer_connected.connect(_on_peer_connected)
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-		_spawn_player(multiplayer.get_unique_id())
-		var players: Array[Node] = player_spawn_container.get_children()
-		if not players.is_empty():
-			for player in players:
-				LogManager.error(_level_name, "found players as server "+ str(player.multiplayer.get_unique_id()))
-				for player_id in multiplayer.get_peers():
-					if player_id == player.multiplayer.get_unique_id():
-						LogManager.error(_level_name, "player already spawned "+ str(player_id))
-						return
-					call_deferred("_spawn_player",player_id)
+		
+		# 1. Spawn the host
+		call_deferred("_spawn_player", multiplayer.get_unique_id())
+		
+		# 2. Spawn all already-connected peers
+		for player_id in multiplayer.get_peers():
+			call_deferred("_spawn_player", player_id)
+
 
 		
 		# NEW: Spawn the initial level loot

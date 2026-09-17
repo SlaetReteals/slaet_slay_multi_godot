@@ -40,9 +40,12 @@ extends CharacterBody2D
 @onready var alive_state: CompoundState = $StateChart/Root/Alive
 @onready var multi_id = str(self.name)
 
+var _is_local_authority: bool = false
+
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 func _ready() -> void:
+	_is_local_authority = is_multiplayer_authority()
 	# Disable Netfox processing immediately upon spawn
 	state_sync.set_process(false)
 	state_sync.set_physics_process(false)
@@ -52,7 +55,7 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		# Start a short timer, or ideally wait for a "Client Loaded" RPC
 		_wait_for_clients_to_load()
-	if is_multiplayer_authority():
+	if _is_local_authority:
 		call_deferred("_claim_local_camera", self)
 	if multiplayer.is_server():
 		_connect_server_signals()
@@ -67,7 +70,7 @@ func _connect_server_signals() -> void:
 	health_component.on_health_depleted.connect(_on_health_depleted)
 
 func _process(_delta: float) -> void:
-	if is_multiplayer_authority():
+	if _is_local_authority:
 		_poll_local_inputs()
 	
 	_update_sprite_direction()

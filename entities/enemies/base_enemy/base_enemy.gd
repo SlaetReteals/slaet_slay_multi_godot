@@ -115,7 +115,7 @@ func _on_attack_state_entered() -> void:
 		if not _is_dead:
 			state_chart.send_event("attack_finished")
 	)
-func apply_damage(base_damage: float) -> void:
+func apply_damage(base_damage: float, _element: String = "physical") -> void:
 	if not multiplayer.is_server():
 		return
 	if is_instance_valid(health_component):

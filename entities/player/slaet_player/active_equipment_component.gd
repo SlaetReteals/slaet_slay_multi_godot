@@ -74,7 +74,7 @@ func _calculate_interception_azimuth(anchor: Node2D) -> float:
 	return anchor.global_rotation
 
 @rpc("any_peer", "call_local", "reliable")
-func _rpc_fire_bullets(anchor_index: int, pattern_id: String, azimuth: float, shared_area: String) -> void:
+func _rpc_fire_bullets(anchor_index: int, _pattern_id: String, azimuth: float, _shared_area: String) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id != 1 and sender_id != 0:
 		return
@@ -85,4 +85,3 @@ func _rpc_fire_bullets(anchor_index: int, pattern_id: String, azimuth: float, sh
 		
 		if is_instance_valid(active_anchor):
 			active_anchor.global_rotation = azimuth
-			Spawning.spawn(active_anchor, pattern_id, shared_area)

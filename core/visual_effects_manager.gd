@@ -8,11 +8,8 @@ func _ready() -> void:
 
 ## API for other components to trigger damage numbers
 func show_damage(amount: float, position: Vector2) -> void:
-	var floating_text = floating_text_scene.instantiate()
-	
-	# 2. Check if the layer is a CanvasLayer (UI) or Node2D (World)
 	var jitter = Vector2(randf_range(-16.0, 16.0), randf_range(-16.0, 16.0))
-	floating_text = floating_text_scene.instantiate()
+	var floating_text: FloatingText = floating_text_scene.instantiate() as FloatingText
 	floating_text.global_position = position + jitter
 	add_child(floating_text)
 	
