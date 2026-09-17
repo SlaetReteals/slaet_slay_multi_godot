@@ -5,14 +5,19 @@ extends Node2D
 @onready var area_range: Area2D = $Area
 @onready var random_stream: RandomStreamPlayer2DComponent = $RandomStreamPlayer2DComponent
 
+var _collecting_player: Node2D = null
+
 func _ready():
 	area_range.area_entered.connect(_on_area_entered)
 
 func tween_collect(percent: float, start_position: Vector2):
-	var player = get_tree().get_first_node_in_group('player')
-	if player == null:
+	var player = _collecting_player
+	if player == null or not is_instance_valid(player):
+		var players = get_tree().get_nodes_in_group(&"players")
+		if not players.is_empty():
+			player = players[0] as Node2D
+	if player == null or not is_instance_valid(player):
 		return
-	
 	
 	global_position = start_position.lerp(player.global_position, percent)
 	var direction_from_start = player.global_position - start_position
@@ -30,9 +35,16 @@ func disable_collision():
 	collision.disabled = true
 
 
-func _on_area_entered(_area: Area2D) -> void:
+func _on_area_entered(area: Area2D) -> void:
+	if area.owner is Node2D:
+		_collecting_player = area.owner as Node2D
+	else:
+		var players = get_tree().get_nodes_in_group(&"players")
+		if not players.is_empty():
+			_collecting_player = players[0] as Node2D
 	disable_collision.call_deferred()
-	$ShadowComponent.queue_free.call_deferred()
+	if has_node("ShadowComponent"):
+		$ShadowComponent.queue_free.call_deferred()
 	
 	var tween = create_tween() 
 	tween.set_parallel()

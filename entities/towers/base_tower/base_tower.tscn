@@ -1,4 +1,45 @@
-[gd_scene format=3 uid="uid://ap3id5p3cmyp4"]
+[gd_scene format=3 uid="uid://btowerbase001"]
 
-[node name="BaseTower" type="StaticBody2D" unique_id=2178486517]
-metadata/TemplateVersion = "1.4.0"
+[ext_resource type="Script" path="res://entities/towers/base_tower/base_tower.gd" id="1_tower"]
+[ext_resource type="Script" path="res://components/combat/targeting_component.gd" id="2_target"]
+[ext_resource type="PackedScene" uid="uid://dmegso3kjij1s" path="res://components/health_component.tscn" id="3_health"]
+[ext_resource type="PackedScene" uid="uid://7jwo8f2bjjf8" path="res://components/hurtbox_component.tscn" id="4_hurt"]
+[ext_resource type="Texture2D" uid="uid://b5v7lgviiytj3" path="res://assets/textures/player/MushStone.png" id="5_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tower_body"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tower_hurt"]
+radius = 18.0
+
+[node name="BaseTower" type="StaticBody2D" groups=["player_targets", "towers"]]
+collision_layer = 256
+collision_mask = 0
+script = ExtResource("1_tower")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("5_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_tower_body")
+
+[node name="TargetingComponent" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 260
+script = ExtResource("2_target")
+targeting_radius = 350.0
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_health")]
+max_health = 100.0
+current_health = 100.0
+
+[node name="HurtboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("4_hurt")]
+collision_layer = 272
+collision_mask = 64
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CircleShape2D_tower_hurt")
+
+[node name="ShootTimer" type="Timer" parent="."]
+autostart = true

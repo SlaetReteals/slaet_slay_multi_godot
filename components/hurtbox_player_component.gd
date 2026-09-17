@@ -8,25 +8,40 @@ signal hit
 func _ready() -> void:
 	if multiplayer.is_server():
 		body_entered.connect(_on_body_entered)
+		area_entered.connect(_on_area_entered)
 
-
-func _on_body_entered(body: CharacterBody2D) -> void:
-	var damage: int = body.damage
-	var damage_type: String = body.damage_type
-	var modified_damage: int = 0
+func _on_body_entered(body: Node2D) -> void:
 	if not is_instance_valid(health_component):
 		return
 
-	## Execute discrete routing via native string namespace matching
-	if damage_type == "basic":
-		modified_damage = 1 * damage
-			
-	if owner and owner.has_method("apply_damage"):
-		owner.apply_damage(modified_damage)
-	
-	if modified_damage == null:
+	var dmg: float = 0.0
+	var dmg_type: String = "basic"
+	if "damage" in body:
+		dmg = float(body.damage)
+	if "damage_type" in body:
+		dmg_type = str(body.damage_type)
+
+	if dmg <= 0.0:
 		return
-	_rpc_execute_visual_hit.rpc(modified_damage)
+
+	_apply_damage_to_player(dmg, dmg_type)
+
+func _on_area_entered(area: Area2D) -> void:
+	if not is_instance_valid(health_component):
+		return
+
+	if area is HitboxComponent:
+		var hitbox: HitboxComponent = area as HitboxComponent
+		_apply_damage_to_player(hitbox.damage, hitbox.damage_type)
+		hitbox.register_hit(owner)
+
+func _apply_damage_to_player(amount: float, type: String) -> void:
+	if owner and owner.has_method("apply_damage"):
+		owner.apply_damage(amount, type)
+	elif health_component:
+		health_component.damage(amount)
+	
+	_rpc_execute_visual_hit.rpc(amount)
 	
 @rpc("any_peer", "call_local", "reliable")
 func _rpc_execute_visual_hit(damage_amount: float) -> void:

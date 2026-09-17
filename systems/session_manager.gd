@@ -36,7 +36,8 @@ func _execute_game_over() -> void:
 	await get_tree().create_timer(2.0).timeout
 	
 	# Server changes the scene, Netfox/MultiplayerAPI will sync this to clients automatically
-	var main_node: Main = get_tree().root.get_node("Main") 
+	var main_node: Main = get_tree().get_first_node_in_group(&"main") as Main
+	if not main_node and get_tree().root.has_node("Main"):
+		main_node = get_tree().root.get_node("Main") as Main
 	if main_node:
 		main_node.change_level("res://levels/01_level_lobby/01_level_lobby.tscn")
-	#get_tree().change_scene_to_file("res://ui/multiplayer_menus/host_join_screen/host_join_screen.tscn")

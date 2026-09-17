@@ -18,6 +18,7 @@ enum GemSize { SMALL, MEDIUM, LARGE }
 @onready var death_state: AtomicState = $StateChart/Root/Death
 @onready var hurtbox: Area2D = $HurtboxComponent
 @onready var sprite: Sprite2D = $Visuals/EnemySprite
+@onready var status_effect_component: StatusEffectComponent = get_node_or_null("StatusEffectComponent") as StatusEffectComponent
 
 var _target_player: Node2D = null
 var _is_dead: bool = false
@@ -60,19 +61,35 @@ func _tick(_delta: float, tick_id: int) -> void:
 
 # --- Spatial Targeting ---
 func _acquire_closest_target() -> void:
-	var players: Array[Node] = get_tree().get_nodes_in_group("players")
+	var potential_targets: Array[Node] = []
+	potential_targets.append_array(get_tree().get_nodes_in_group(&"player_targets"))
+	potential_targets.append_array(get_tree().get_nodes_in_group(&"players"))
+	
 	var closest_dist: float = INF
 	_target_player = null
 	
-	for player in players:
-		if is_instance_valid(player) and player is Node2D and not player._is_dead:
-			var dist: float = global_position.distance_squared_to(player.global_position)
-			if dist < closest_dist:
-				closest_dist = dist
-				_target_player = player
+	for candidate in potential_targets:
+		if not is_instance_valid(candidate) or not (candidate is Node2D) or candidate.is_queued_for_deletion():
+			continue
+		# Ignore dead players
+		if "_is_dead" in candidate and candidate._is_dead:
+			continue
+		# Ignore dead entities with health components
+		var hp: HealthComponent = candidate.get_node_or_null("HealthComponent") as HealthComponent
+		if hp and hp.current_health <= 0.0:
+			continue
+			
+		var dist: float = global_position.distance_squared_to((candidate as Node2D).global_position)
+		if dist < closest_dist:
+			closest_dist = dist
+			_target_player = candidate as Node2D
 
 # --- Navigation & Kinematics ---
 func _apply_server_navigation(tick_id: int) -> void:
+	if is_instance_valid(status_effect_component) and status_effect_component.is_stunned():
+		velocity = Vector2.ZERO
+		return
+		
 	_acquire_closest_target()
 	
 	if not is_instance_valid(_target_player):
@@ -115,11 +132,19 @@ func _on_attack_state_entered() -> void:
 		if not _is_dead:
 			state_chart.send_event("attack_finished")
 	)
-func apply_damage(base_damage: float, _element: String = "physical") -> void:
+func apply_damage(base_damage: float, element: String = "physical") -> void:
 	if not multiplayer.is_server():
 		return
 	if is_instance_valid(health_component):
 		health_component.damage(base_damage)
+	if is_instance_valid(status_effect_component) and element != "physical":
+		match element.to_lower():
+			"fire":
+				status_effect_component.apply_status("burn", 3.0, base_damage * 0.3)
+			"ice":
+				status_effect_component.apply_status("slow", 2.5, 0.45)
+			"stun", "explosive":
+				status_effect_component.apply_status("stun", 0.5)
 # --- Lifecycle Management ---
 func _on_health_depleted() -> void:
 	if not multiplayer.is_server() or _is_dead:
@@ -127,27 +152,43 @@ func _on_health_depleted() -> void:
 	state_chart.send_event("dead")
 
 func _on_death_state_entered() -> void:
+	if _is_dead:
+		return
 	_is_dead = true
-		# 2. ONLY the Server should broadcast the RPC and manage node deletion
-	if multiplayer.is_server():
+	
+	# Immediately untarget this enemy from all players, towers, and abilities
+	remove_from_group(&"enemy")
+	
+	# Stop synchronizing state and clear peer visibility so no more state packets are broadcast
+	var state_sync: Node = get_node_or_null("StateSynchronizer")
+	if state_sync:
+		state_sync.process_mode = Node.PROCESS_MODE_DISABLED
+		state_sync.set_process(false)
+		state_sync.set_physics_process(false)
+		if "visibility_filter" in state_sync and state_sync.visibility_filter != null:
+			state_sync.visibility_filter.set_visibility_for(0, false)
+			state_sync.visibility_filter.update_visibility()
+			
+	# Disable collisions and hurtbox so it cannot interact or take damage while dying
+	collision_layer = 0
+	collision_mask = 0
+	if hurtbox:
+		hurtbox.set_deferred("monitoring", false)
+		hurtbox.set_deferred("monitorable", false)
+	var hitbox_col: CollisionShape2D = get_node_or_null("HitBox") as CollisionShape2D
+	if hitbox_col:
+		hitbox_col.set_deferred("disabled", true)
+	if sprite:
+		sprite.visible = false
 		
-		# Tell all clients to hide the body and spawn the 2D Explosion Sprite
+	if multiplayer.is_server():
 		_rpc_execute_death_visuals.rpc()
 		
-		# (If you are spawning an EXP gem, do it right here!)
-		# _spawn_exp_gem()
-
-		# 3. Network Buffer: Give the RPC 0.25 seconds to travel across the internet 
-		# before the Server destroys the actual node.
-		call_deferred("queue_free")
-	
-	
-	# 1. Turn off core logic and physics immediately (DEFERRED)
-	#set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
-	#$HurtboxComponent.set_deferred("monitorable", false)
-	#$HurtboxComponent.set_deferred("monitoring", false)
-
-	#$HurtboxComponent/CollisionShape2D.set_deferred("disabled", true)
+		# Network Buffer: Keep proxy node alive for 0.6s to cleanly absorb any in-flight ACKs from clients
+		get_tree().create_timer(0.6).timeout.connect(func():
+			if is_instance_valid(self):
+				queue_free()
+		)
 
 @rpc("authority", "call_local", "reliable")
 func _rpc_execute_death_visuals() -> void:

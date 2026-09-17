@@ -18,7 +18,7 @@ func _ready() -> void:
 	quit_button.pressed.connect(on_quit_pressed)
 
 func on_play_pressed() -> void:
-	ScreenTransition.transition_to_scene('res://scenes/main/main.tscn', true)
+	ScreenTransition.transition_to_scene('res://scenes/main.tscn', true)
 
 func on_class_pressed() -> void:
 	ScreenTransition.transition()

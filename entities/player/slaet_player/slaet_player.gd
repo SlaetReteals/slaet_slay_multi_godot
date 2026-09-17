@@ -8,12 +8,21 @@ extends CharacterBody2D
 @export var tombstone_sprite: Sprite2D
 
 
-@onready var default_weapon_path: String = "res://entities/active_equipment/default.tres"
-#@onready var active_equipment_path: String = "res://entities/active_equipment/default2.tres"
+@onready var default_weapon_path: String = "res://resources/equipment/basic.tres"
+#@onready var active_equipment_path: String = "res://resources/equipment/fire_wand.tres"
 
 # --- Netfox Synchronized Properties ---
 # Both movement and combat intent MUST be exported here and tracked by the RollbackSynchronizer
 @export var _input_vector: Vector2 = Vector2.ZERO
+
+@export_group("Active Ability")
+@export var active_spell_scene: PackedScene = preload("res://components/combat/base_projectile.tscn")
+@export var active_spell_cooldown: float = 1.0
+@export var active_spell_speed: float = 550.0
+@export var active_spell_damage: float = 30.0
+@export var active_spell_element: String = "physical"
+
+var _last_spell_cast_tick: int = 0
 
 # --- Node References ---
 @onready var sprite: Sprite2D = $Visuals/PlayerSprite as Sprite2D
@@ -23,6 +32,8 @@ extends CharacterBody2D
 
 # COMPONENT DELEGATION: We route all weapon logic to this child node
 @onready var equipment_component: ActiveEquipmentComponent = $ActiveEquipmentComponent as ActiveEquipmentComponent
+@onready var placement_component: PlacementComponent = get_node_or_null("PlacementComponent") as PlacementComponent
+@onready var ability_component: AbilityComponent = get_node_or_null("AbilityComponent") as AbilityComponent
 
 # Textures
 @onready var tex_walk_side: Texture2D = load("res://assets/textures/player/MushWalk.png")
@@ -45,6 +56,7 @@ var _is_local_authority: bool = false
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 func _ready() -> void:
+	add_to_group(&"player_targets")
 	_is_local_authority = is_multiplayer_authority()
 	# Disable Netfox processing immediately upon spawn
 	state_sync.set_process(false)
@@ -57,12 +69,17 @@ func _ready() -> void:
 		_wait_for_clients_to_load()
 	if _is_local_authority:
 		call_deferred("_claim_local_camera", self)
+		var mobile_ui: Node = get_node_or_null("UI/MobileActionBar")
+		if mobile_ui and mobile_ui.has_method("setup"):
+			mobile_ui.setup(self)
+	else:
+		if has_node("UI"):
+			$UI.queue_free()
 	if multiplayer.is_server():
 		_connect_server_signals()
 	# EVERYONE must grant the weapon so it visually exists on all screens
-#	if equipment_component != null:
-#		equipment_component.grant_default_weapon(default_weapon_path)
-#		equipment_component.grant_active_equipment(active_equipment_path)
+	if equipment_component != null and not default_weapon_path.is_empty():
+		equipment_component.grant_default_weapon(default_weapon_path)
 
 func _connect_server_signals() -> void:
 	death_state.state_entered.connect(_on_death_state_entered)
@@ -106,11 +123,63 @@ func _poll_local_inputs() -> void:
 	
 	var combined_input: Vector2 = keyboard_input + touch_input
 	_input_vector = combined_input.normalized() if combined_input.length_squared() > 1.0 else combined_input
-	
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not _is_local_authority or _is_dead:
+		return
+		
+	if placement_component and not placement_component.available_placeables.is_empty():
+		if event.is_action_pressed("hotbar_1") and placement_component.available_placeables.size() > 0:
+			placement_component.start_placement(placement_component.available_placeables[0])
+		elif event.is_action_pressed("hotbar_2") and placement_component.available_placeables.size() > 1:
+			placement_component.start_placement(placement_component.available_placeables[1])
+		elif event.is_action_pressed("hotbar_3") and placement_component.available_placeables.size() > 2:
+			placement_component.start_placement(placement_component.available_placeables[2])
+			
+	if placement_component and placement_component.is_placing:
+		if event.is_action_pressed("left_click"):
+			placement_component.confirm_placement()
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("cancel_action"):
+			placement_component.cancel_placement()
+			get_viewport().set_input_as_handled()
+			
+	if event.is_action_pressed("ability_cast"):
+		_try_cast_active_spell()
+
+func _try_cast_active_spell(slot: int = 0) -> void:
+	if not _is_local_authority or _is_dead:
+		return
+	if ability_component:
+		ability_component.cast_ability_slot(slot)
+	elif active_spell_scene:
+		var cooldown_ticks: int = int(active_spell_cooldown * 60.0)
+		if NetworkTime.tick < _last_spell_cast_tick + cooldown_ticks:
+			return
+		_last_spell_cast_tick = NetworkTime.tick
+		var azimuth: float = global_position.angle_to_point(get_global_mouse_position())
+		_rpc_cast_spell.rpc(azimuth)
+
+@rpc("any_peer", "call_local", "reliable")
+func _rpc_cast_spell(azimuth: float) -> void:
+	if active_spell_scene:
+		var proj: Node = active_spell_scene.instantiate()
+		if proj is Node2D:
+			proj.global_position = global_position
+			if proj.has_method("setup"):
+				proj.setup(Vector2.RIGHT.rotated(azimuth), active_spell_speed, active_spell_damage, active_spell_element)
+			elif "direction" in proj:
+				proj.direction = Vector2.RIGHT.rotated(azimuth)
+		var level: Node = get_tree().get_first_node_in_group(&"current_level")
+		var target_parent: Node = level if level else get_tree().current_scene
+		target_parent.add_child(proj)
+
 func _rollback_tick(delta: float, tick: int, is_fresh: bool) -> void:
 	if not _is_dead:
 		_apply_kinematics(delta)
 		equipment_component.process_weapons(tick, is_fresh)
+		if ability_component and is_fresh and multiplayer.is_server():
+			ability_component.process_auto_abilities(tick)
 	# Process revive logic continuously while dead
 	if is_fresh:
 		revive_component.process_revive_tick(delta)

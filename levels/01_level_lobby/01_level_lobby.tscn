@@ -33,9 +33,14 @@ spawn_path = NodePath("../PlayerContainer")
 [node name="EquipmentSpawner" type="MultiplayerSpawner" parent="." unique_id=2099422037]
 spawn_path = NodePath("../EquipmentContainer")
 
+[node name="EntitySpawner" type="MultiplayerSpawner" parent="." unique_id=2088192831]
+spawn_path = NodePath("../Entities")
+
 [node name="PlayerContainer" type="Node" parent="." unique_id=1256277312]
 
 [node name="EquipmentContainer" type="Node" parent="." unique_id=1391788210]
+
+[node name="Entities" type="Node" parent="." unique_id=1948271034]
 
 [node name="SessionManager" type="Node" parent="." unique_id=1062260702 node_paths=PackedStringArray("player_spawn_container") groups=["session_manager"]]
 script = ExtResource("4_4lknb")

@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="6_vewtg"]
 [ext_resource type="Texture2D" uid="uid://6sa0r4j6n33r" path="res://assets/textures/enemies/bug/bug_right.png" id="7_vewtg"]
 [ext_resource type="PackedScene" uid="uid://7jwo8f2bjjf8" path="res://components/hurtbox_component.tscn" id="10_21mdi"]
+[ext_resource type="Script" path="res://components/combat/status_effect_component.gd" id="11_status"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uu5dw"]
 radius = 15.0
@@ -116,9 +117,13 @@ libraries/ = SubResource("AnimationLibrary_khlb5")
 [node name="HealthComponent" parent="." unique_id=84471790 instance=ExtResource("6_pkybk")]
 
 [node name="HurtboxComponent" parent="." unique_id=1816348076 node_paths=PackedStringArray("health_component") groups=["enemy"] instance=ExtResource("10_21mdi")]
-collision_layer = 256
-collision_mask = 7680
+collision_layer = 272
+collision_mask = 7712
 health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=168896610]
 shape = SubResource("CapsuleShape2D_21mdi")
+
+[node name="StatusEffectComponent" type="Node" parent="." unique_id=741098231 node_paths=PackedStringArray("health_component")]
+script = ExtResource("11_status")
+health_component = NodePath("../HealthComponent")

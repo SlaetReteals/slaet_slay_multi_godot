@@ -20,11 +20,11 @@ func play_in(delay: float = 0) -> void:
 
 func update_progress():
 	var current_quantity = 0
-	if SaveManager.save_data['player']['meta_upgrades'].has(upgrade.id):
-		current_quantity = SaveManager.save_data['player']['meta_upgrades'][upgrade.id]['quantity']
+	if SaveManager.save_data != null and SaveManager.save_data.meta_upgrades.has(upgrade.id):
+		current_quantity = SaveManager.save_data.meta_upgrades[upgrade.id]['quantity']
 	
 	var is_maxed: bool = current_quantity >= upgrade.max_quantity
-	var currency = SaveManager.save_data['player']['meta_upgrade_currency']
+	var currency = SaveManager.save_data.meta_upgrade_currency if SaveManager.save_data != null else 0.0
 	var percent = min(currency / upgrade.experience_cost, 1)
 	
 	progress_bar.value = percent
@@ -40,10 +40,10 @@ func set_meta_upgrade(current_upgrade: MetaUpgrade):
 	update_progress()
 
 func on_purchase_pressed():
-	if upgrade == null: return
+	if upgrade == null or SaveManager.save_data == null: return
 	MetaProgression.add_meta_upgrade(upgrade)
 	
-	SaveManager.save_data['player']['meta_upgrade_currency'] -= upgrade.experience_cost
+	SaveManager.save_data.meta_upgrade_currency -= upgrade.experience_cost
 	SaveManager.save()
 	
 	get_tree().call_group('meta_upgrade_card', 'update_progress')

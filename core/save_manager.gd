@@ -3,10 +3,33 @@ extends Node
 # Define a directory to hold all player saves, rather than a single file
 const SAVE_DIR: String = "user://player_saves/"
 
+const SAVE_PATH: String = "user://server_player_data.tres"
+
+@export var save_data: PlayerSaveData
+
 func _ready() -> void:
 	# Ensure the save directory exists when the game boots
 	if not DirAccess.dir_exists_absolute(SAVE_DIR):
 		DirAccess.make_dir_absolute(SAVE_DIR)
+	_load_save_file()
+
+func save() -> void:
+	if multiplayer.multiplayer_peer != null and not (multiplayer.multiplayer_peer is OfflineMultiplayerPeer):
+		if not multiplayer.is_server():
+			return
+			
+	if save_data == null:
+		save_data = PlayerSaveData.new()
+		
+	var error: Error = ResourceSaver.save(save_data, SAVE_PATH)
+	if error != OK:
+		push_error("SaveManager: Failed to save data.")
+
+func _load_save_file() -> void:
+	if ResourceLoader.exists(SAVE_PATH):
+		save_data = load(SAVE_PATH) as PlayerSaveData
+	if save_data == null:
+		save_data = PlayerSaveData.new()
 
 # --- SAVE LOGIC ---
 

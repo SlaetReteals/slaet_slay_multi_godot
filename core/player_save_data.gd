@@ -8,6 +8,8 @@ class_name PlayerSaveData
 # Critical game data (e.g., progression, total currency, wave completion) MUST only be saved by the Server to prevent cheating.
 @export var highest_wave_completed: int = 0
 @export var total_currency: int = 0
+@export var meta_upgrade_currency: float = 0.0
+@export var meta_upgrades: Dictionary = {}
 
 # --- CURRENT SESSION STATE ---
 @export var current_health: int = 100

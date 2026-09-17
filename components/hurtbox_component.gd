@@ -12,7 +12,21 @@ func _ready() -> void:
 func _on_area_entered(area: Area2D) -> void:
 	if not is_instance_valid(health_component):
 		return
-	_resolve_shared_area_payload(area.name)
+	
+	if area is HitboxComponent:
+		var hitbox: HitboxComponent = area as HitboxComponent
+		var damage_amount: float = hitbox.damage
+		var damage_type: String = hitbox.damage_type
+		
+		if owner and owner.has_method("apply_damage"):
+			owner.apply_damage(damage_amount, damage_type)
+		elif health_component:
+			health_component.damage(damage_amount)
+			
+		hitbox.register_hit(owner)
+		_rpc_execute_visual_hit.rpc(damage_amount)
+	else:
+		_resolve_shared_area_payload(area.name)
 
 func _resolve_shared_area_payload(shared_area: String) -> void:
 	var base_damage: float = 0.0
@@ -26,11 +40,14 @@ func _resolve_shared_area_payload(shared_area: String) -> void:
 		base_damage = 30.0
 	elif "bullet_bomb" in shared_area:
 		base_damage = 50.0
-		
 	else:
-		base_damage = 10
+		base_damage = 10.0
+		
 	if owner and owner.has_method("apply_damage"):
 		owner.apply_damage(base_damage)
+		_rpc_execute_visual_hit.rpc(base_damage)
+	elif health_component:
+		health_component.damage(base_damage)
 		_rpc_execute_visual_hit.rpc(base_damage)
 
 @rpc("authority", "call_local", "reliable")

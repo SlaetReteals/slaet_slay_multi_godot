@@ -19,6 +19,13 @@
 [ext_resource type="Texture2D" uid="uid://s6ndwlote0of" path="res://assets/textures/ui/Move Joystick Handle.png" id="12_e56cv"]
 [ext_resource type="Texture2D" uid="uid://dmmsyythqo2i" path="res://assets/textures/ui/Move Joystick Background.png" id="14_7jxgo"]
 [ext_resource type="Script" uid="uid://drh7jp8h45rse" path="res://entities/player/slaet_player/revive_component.gd" id="18_e4s46"]
+[ext_resource type="Script" path="res://components/combat/placement_component.gd" id="19_place"]
+[ext_resource type="Resource" uid="uid://btowerpreset01" path="res://resources/placeables/basic_tower.tres" id="20_tower"]
+[ext_resource type="Resource" uid="uid://btrappreset01" path="res://resources/placeables/spike_trap.tres" id="21_trap"]
+[ext_resource type="PackedScene" uid="uid://cmobileactbar001" path="res://ui/hud/mobile_action_bar.tscn" id="22_mobile"]
+[ext_resource type="Script" path="res://components/combat/ability_component.gd" id="23_abl_comp"]
+[ext_resource type="Resource" uid="uid://cfireball001" path="res://resources/abilities/fireball.tres" id="24_fireball"]
+[ext_resource type="Resource" uid="uid://cfrostnova001" path="res://resources/abilities/frost_nova.tres" id="25_frostnova"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tlq1q"]
 radius = 8.409518
@@ -130,11 +137,13 @@ shape = SubResource("CircleShape2D_tlq1q")
 [node name="UI" type="CanvasLayer" parent="." unique_id=2114761009]
 
 [node name="VirtualJoystickComponent" type="Control" parent="UI" unique_id=1186674409 node_paths=PackedStringArray("knob", "joystick_background")]
-visible = false
 layout_mode = 3
-anchors_preset = 9
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("11_gwlfu")
 knob = NodePath("Knob")
 joystick_background = NodePath("JoystickBackground")
@@ -149,6 +158,8 @@ texture = ExtResource("12_e56cv")
 script = ExtResource("12_aky2q")
 target_sprite = NodePath(".")
 
+[node name="MobileActionBar" parent="UI" unique_id=1948172635 instance=ExtResource("22_mobile")]
+
 [node name="ActiveEquipmentComponent" type="Node2D" parent="." unique_id=401309170]
 script = ExtResource("10_js1sq")
 
@@ -159,7 +170,8 @@ max_health = 100.0
 current_health = 100.0
 
 [node name="HurtboxPlayerComponent" parent="." unique_id=198919082 node_paths=PackedStringArray("health_component") instance=ExtResource("12_7jxgo")]
-collision_mask = 4352
+collision_layer = 8
+collision_mask = 4420
 health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxPlayerComponent" unique_id=1811112312]
@@ -172,3 +184,12 @@ player_node = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ReviveComponent" unique_id=934559112]
 shape = SubResource("CapsuleShape2D_wd0ox")
+
+[node name="PlacementComponent" type="Node2D" parent="." unique_id=1849102837]
+script = ExtResource("19_place")
+available_placeables = [ExtResource("20_tower"), ExtResource("21_trap")]
+
+[node name="AbilityComponent" type="Node2D" parent="." unique_id=1284719023]
+script = ExtResource("23_abl_comp")
+abilities = [ExtResource("24_fireball"), ExtResource("25_frostnova")]
+

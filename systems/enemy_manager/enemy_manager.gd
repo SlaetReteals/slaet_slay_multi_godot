@@ -19,7 +19,9 @@ func _ready() -> void:
 	arena_time_manager.arena_difficulty_increased.connect(on_arena_difficulty_increased)
 
 func get_spawn_position() -> Vector2:
-	var player = get_tree().get_first_node_in_group('player') as Node2D
+	var players: Array[Node] = get_tree().get_nodes_in_group(&"players")
+	if players.is_empty(): return Vector2.ZERO
+	var player: Node2D = players.pick_random() as Node2D
 	if player == null: return Vector2.ZERO
 	
 	var spawn_position: Vector2 = Vector2.ZERO

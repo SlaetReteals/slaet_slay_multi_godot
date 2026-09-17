@@ -1,10 +1,21 @@
 class_name ActiveEquipmentComponent
 extends Node2D
 
+@export var targeting_component: TargetingComponent
+
 # --- Local State ---
 var _inventory: Array[BulletProp] = []
 var _fire_ticks: Array[int] = []
 var _weapon_anchors: Array[Node2D] = [] # Dedicated spatial matrix per weapon
+
+func _ready() -> void:
+	if targeting_component == null:
+		targeting_component = get_node_or_null("TargetingComponent") as TargetingComponent
+		if targeting_component == null:
+			targeting_component = TargetingComponent.new()
+			targeting_component.name = "TargetingComponent"
+			targeting_component.targeting_radius = 450.0
+			add_child(targeting_component)
 
 # --- Weapon Management ---
 func grant_default_weapon(active_equipment_path: String) -> void:
@@ -56,20 +67,29 @@ func process_weapons(tick: int, is_fresh: bool) -> void:
 
 # Pass the specific anchor to calculate azimuth from its exact offset
 func _calculate_interception_azimuth(anchor: Node2D) -> float:
+	if targeting_component != null:
+		var target: Node2D = null
+		if targeting_component.has_method("acquire_target"):
+			target = targeting_component.acquire_target()
+		elif targeting_component.has_method("get_target"):
+			target = targeting_component.get_target()
+		if is_instance_valid(target):
+			return anchor.global_position.angle_to_point(target.global_position)
+		return anchor.global_rotation
+		
 	var enemies: Array[Node] = get_tree().get_nodes_in_group("enemy")
-	#print(enemies)
 	var closest_dist: float = INF
-	var target: Node2D = null
+	var fallback_target: Node2D = null
 	
 	for enemy in enemies:
 		if is_instance_valid(enemy) and enemy is Node2D:
 			var dist: float = anchor.global_position.distance_squared_to(enemy.global_position)
 			if dist < closest_dist:
 				closest_dist = dist
-				target = enemy
+				fallback_target = enemy
 				
-	if is_instance_valid(target):
-		return anchor.global_position.angle_to_point(target.global_position)
+	if is_instance_valid(fallback_target):
+		return anchor.global_position.angle_to_point(fallback_target.global_position)
 		
 	return anchor.global_rotation
 
@@ -85,3 +105,15 @@ func _rpc_fire_bullets(anchor_index: int, _pattern_id: String, azimuth: float, _
 		
 		if is_instance_valid(active_anchor):
 			active_anchor.global_rotation = azimuth
+			
+		if anchor_index < _inventory.size():
+			var weapon: BulletProp = _inventory[anchor_index]
+			if weapon and weapon.projectile_scene:
+				var proj: Node = weapon.projectile_scene.instantiate()
+				if proj is Node2D:
+					proj.global_position = active_anchor.global_position
+					if proj.has_method("setup"):
+						proj.setup(Vector2.RIGHT.rotated(azimuth), weapon.speed, weapon.base_damage, weapon.damage_type)
+					elif "direction" in proj:
+						proj.direction = Vector2.RIGHT.rotated(azimuth)
+				get_tree().current_scene.add_child(proj)

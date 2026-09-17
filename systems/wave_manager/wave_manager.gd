@@ -6,10 +6,11 @@ extends Node
 @onready var enemy_spawner: MultiplayerSpawner = $EnemySpawner
 
 var _next_spawn_tick: int = 0
+var _enemy_id_counter: int = 0
 
 func _ready() -> void:
 	if not NetworkTime.on_tick.is_connected(_tick):
-			NetworkTime.on_tick.connect(_tick)
+		NetworkTime.on_tick.connect(_tick)
 	# Programmatically register all enemy scenes so clients know how to build them
 	for scene: PackedScene in enemy_roster:
 		enemy_spawner.add_spawnable_scene(scene.resource_path)
@@ -33,9 +34,9 @@ func _spawn_enemy_staggered() -> void:
 	var random_enemy_scene: PackedScene = enemy_roster.pick_random()
 	var enemy: Node2D = random_enemy_scene.instantiate() as Node2D
 	
-	enemy.global_position = Vector2(0,0)
+	_enemy_id_counter += 1
+	enemy.name = "Enemy_%d" % _enemy_id_counter
+	enemy.global_position = Vector2.ZERO
 	
-	#enemy.global_position = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized() * 1000
-	
-	# Adding it as a child triggers the automatic MultiplayerSpawner replication
-	add_child(enemy, true)
+	# Adding with unique name ensures 1:1 path replication across all peers
+	add_child(enemy)
