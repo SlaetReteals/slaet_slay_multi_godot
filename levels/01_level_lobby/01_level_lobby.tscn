@@ -4,19 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://8nsatcn6jr32" path="res://entities/player/slaet_player/slaet_player.tscn" id="2_5tjfk"]
 [ext_resource type="Script" uid="uid://5qhv1iu2tppf" path="res://systems/session_manager.gd" id="4_4lknb"]
 [ext_resource type="PackedScene" uid="uid://dhudnqypc48r2" path="res://ui/hud/off_screen_indicator.tscn" id="5_fjipl"]
+[ext_resource type="Texture2D" uid="uid://dik5vmjoes1nh" path="res://assets/textures/LevelMaps/lobby_background.png" id="6_5tjfk"]
 [ext_resource type="PackedScene" uid="uid://dif2ggd7ov0ig" path="res://systems/player_camera/local_camera_system.tscn" id="6_rdacf"]
 [ext_resource type="Texture2D" uid="uid://dmmsyythqo2i" path="res://assets/textures/ui/Move Joystick Background.png" id="7_5tjfk"]
-
-[sub_resource type="Gradient" id="Gradient_p67l7"]
-offsets = PackedFloat32Array(0, 0.5985401, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.46828187, 0.27318332, 0.002814975, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_0w41x"]
-gradient = SubResource("Gradient_p67l7")
-width = 2160
-height = 3840
-fill = 2
-fill_from = Vector2(0.5090218, 0.51282054)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x2fjv"]
 radius = 58.0
@@ -64,7 +54,7 @@ position = Vector2(-500, 0)
 position = Vector2(500, 0)
 
 [node name="ClientSpawn2" type="Marker2D" parent="SpawnLocations" unique_id=1523855238]
-position = Vector2(200, 90.655)
+position = Vector2(-83, 645)
 
 [node name="ClientSpawn3" type="Marker2D" parent="SpawnLocations" unique_id=1472542769]
 position = Vector2(100, 0)
@@ -86,33 +76,32 @@ position = Vector2(250, -300)
 
 [node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1488125169]
 position = Vector2(3.0000916, 0)
-scale = Vector2(1.6944445, 1)
-texture = SubResource("GradientTexture2D_0w41x")
+texture = ExtResource("6_5tjfk")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1443670912]
 
 [node name="Barrel" type="CollisionShape2D" parent="StaticBody2D" unique_id=1305474762]
-position = Vector2(-126, 525)
+position = Vector2(740, 522)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="Barrel2" type="CollisionShape2D" parent="StaticBody2D" unique_id=1475478123]
-position = Vector2(-474, 316)
+position = Vector2(-775, 324)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="Barrel3" type="CollisionShape2D" parent="StaticBody2D" unique_id=1234185673]
-position = Vector2(-445, -149)
+position = Vector2(-746, -294)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="Barrel4" type="CollisionShape2D" parent="StaticBody2D" unique_id=1424046641]
-position = Vector2(-178, -484)
+position = Vector2(-344, -515)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="Barrel5" type="CollisionShape2D" parent="StaticBody2D" unique_id=1541706726]
-position = Vector2(112, -703)
+position = Vector2(613, -296)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="Barrel6" type="CollisionShape2D" parent="StaticBody2D" unique_id=1117338632]
-position = Vector2(430, -757)
+position = Vector2(612, 203)
 shape = SubResource("CapsuleShape2D_x2fjv")
 
 [node name="WorldBoundaryNorth" type="CollisionShape2D" parent="StaticBody2D" unique_id=2079304246]
@@ -146,10 +135,10 @@ navigation_polygon = SubResource("NavigationPolygon_o1uyc")
 collision_mask = 2
 
 [node name="LevelTemplate" type="CollisionShape2D" parent="SpawnLevelTemplate" unique_id=922729727]
-position = Vector2(272, 272)
+position = Vector2(-11, 826.345)
 shape = SubResource("CircleShape2D_6sknn")
 
 [node name="Sprite2D" type="Sprite2D" parent="SpawnLevelTemplate" unique_id=1692173131]
-position = Vector2(272, 272)
+position = Vector2(-11, 826.345)
 scale = Vector2(0.26, 0.26)
 texture = ExtResource("7_5tjfk")

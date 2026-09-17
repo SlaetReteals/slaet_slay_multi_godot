@@ -57,8 +57,8 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		_connect_server_signals()
 	# EVERYONE must grant the weapon so it visually exists on all screens
-	if equipment_component != null:
-		equipment_component.grant_default_weapon(default_weapon_path)
+#	if equipment_component != null:
+#		equipment_component.grant_default_weapon(default_weapon_path)
 #		equipment_component.grant_active_equipment(active_equipment_path)
 
 func _connect_server_signals() -> void:
@@ -179,6 +179,10 @@ func _rpc_execute_death_visuals() -> void:
 #		var anim: AnimationPlayer = get_node("Visuals/AnimationPlayer")
 #		anim.play("death_explode")
 		pass
+@rpc("any_peer", "call_local", "reliable")
+func _rpc_equip_items() -> void:
+	equipment_component.grant_active_equipment(default_weapon_path)
+	
 @rpc("any_peer", "call_local", "reliable")
 func _rpc_set_tombstone_state(is_enabled: bool) -> void:
 	if is_instance_valid(revive_component):

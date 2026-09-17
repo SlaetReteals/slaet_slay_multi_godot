@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://bn0su0ijgiugj" path="res://core/class_manager.gd" id="1_kbjn7"]
 
-[node name="ClassManager" type="Node"]
+[node name="ClassManager" type="Node" unique_id=793986816]
 script = ExtResource("1_kbjn7")

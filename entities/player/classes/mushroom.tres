@@ -1,3 +1,12 @@
-[gd_resource type="Resource" format=3 uid="uid://dlop81xyk2iy8"]
+[gd_resource type="Resource" script_class="PlayerClass" format=3 uid="uid://dlop81xyk2iy8"]
+
+[ext_resource type="Resource" uid="uid://c4m72uyrykcaa" path="res://entities/active_equipment/fire_wand.tres" id="1_lbiuv"]
+[ext_resource type="Script" uid="uid://cfow2xq7gc32d" path="res://resources/player_classes/player_class.gd" id="1_ulbf1"]
 
 [resource]
+script = ExtResource("1_ulbf1")
+id = "mushroom"
+texture_path_folder = "res://assets/textures/player/mushroom/"
+default_equipment = ExtResource("1_lbiuv")
+title = "The Mushroom"
+description = "The Mushroom knows they are the boss and will plant the world with muchrooms."

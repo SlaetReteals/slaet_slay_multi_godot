@@ -1,8 +1,6 @@
 extends Node
 
-const PLAYER_CLASSES: Dictionary = {
-	"mushroom": "res://entities/player/classes/mushroom.tres"
-}
+@export var class_path: String
 
 var _active_player_class: PlayerClass
 

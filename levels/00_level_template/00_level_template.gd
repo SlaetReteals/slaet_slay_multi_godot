@@ -1,5 +1,6 @@
 extends Node2D
 
+@warning_ignore("unused_private_class_variable")
 @export var _level_name: String = "Template"
 @export var player_scene: PackedScene
 @export var spawn_static_active_equipment: PackedScene
@@ -9,6 +10,11 @@ extends Node2D
 @onready var spawn_locations: Node2D = $SpawnLocations
 @onready var local_client_hud: CanvasLayer = $LocalClientHUD
 @onready var context: String = self.name
+
+@onready var equipment_component: ActiveEquipmentComponent = $ActiveEquipmentComponent as ActiveEquipmentComponent
+@onready var default_weapon_path: String = "res://entities/active_equipment/default.tres"
+
+
 const INDICATOR_SCENE: PackedScene = preload("res://ui/hud/off_screen_indicator.tscn") 
 
 var _available_spawn_points: Array[Node] = []
@@ -77,11 +83,11 @@ func _on_peer_disconnected(id: int) -> void:
 
 func _spawn_player(id: int) -> void:
 	var target_pos: Vector2 = Vector2.ZERO
-	
 	if not _available_spawn_points.is_empty():
 		var random_marker: Marker2D = _available_spawn_points.pop_back() as Marker2D
 		target_pos = random_marker.global_position
 		_player_spawn_map[id] = random_marker
+		
 	else:
 		LogManager.warn("Template", "No spawn points left!")
 
@@ -108,6 +114,7 @@ func _on_player_spawned(spawned_node: Node) -> void:
 	var player_node: Player = spawned_node as Player
 	if player_node == null:
 		return
+	print(spawned_node.get_property_list())
 	if spawned_node.has_node("StateSynchronizer"):
 		var sync_node: StateSynchronizer = spawned_node.get_node("StateSynchronizer") as StateSynchronizer
 		sync_node.set_process(true)
@@ -117,6 +124,7 @@ func _on_player_spawned(spawned_node: Node) -> void:
 		# It's me!
 		_has_local_player = true
 		_setup_indicators_for_existing(player_node)
+		
 	else:
 		# It's someone else!
 		if _has_local_player:

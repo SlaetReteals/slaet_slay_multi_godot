@@ -18,6 +18,7 @@ var _player_spawn_map: Dictionary = {}
 var _has_local_player: bool = false
 
 func _ready() -> void:
+	LogManager.info(_level_name,"loaded")
 	player_spawner.spawned.connect(_on_client_player_spawned)
 #	active_equipment_spawner.spawn_function = _spawn_active_equipment
 	if player_scene == null:
