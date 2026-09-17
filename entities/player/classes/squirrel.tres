@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="PlayerClass" format=3 uid="uid://wk2crbsjls54"]
+
+[ext_resource type="Script" uid="uid://cfow2xq7gc32d" path="res://resources/player_classes/player_class.gd" id="1_jq2yq"]
+
+[resource]
+script = ExtResource("1_jq2yq")
+id = "squirrel"
